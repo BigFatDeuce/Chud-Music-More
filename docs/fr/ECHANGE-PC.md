@@ -41,7 +41,7 @@ morceau « local » importé, Chud Music cherche dans cet ordre :
 Un morceau introuvable **reste dans la playlist**, grisé, avec son chemin d'origine : il
 redevient lisible s'il apparaît plus tard, et il est réexporté tel quel vers le PC.
 
-Les morceaux YouTube Music (identifiant de vidéo) sont toujours retrouvés.
+Les morceaux YouTube Music (identifiant YouTube) sont toujours retrouvés.
 
 ## Conseils pour un échange sans perte
 

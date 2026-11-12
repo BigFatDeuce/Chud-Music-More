@@ -41,7 +41,7 @@ track, Chud Music looks, in this order, for:
 A track found nowhere **stays in the playlist**, greyed, with its original path: it becomes
 playable if it shows up later, and it is exported back to the PC unchanged.
 
-YouTube Music tracks (a video id) are always found.
+YouTube Music tracks (a YouTube id) are always found.
 
 ## Tips for a lossless exchange
 

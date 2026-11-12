@@ -26,6 +26,8 @@ mini player above them opens the full player.
   of the library. Nothing is deleted.
 - **Rescan** reads the phone and the network shares again right away.
 - "Remove from library" hides a track; it comes back at the next scan.
+- A scan stopped halfway (app closed, phone switched off) goes on where it stopped at the next
+  start: what was already read is kept. The same goes for network shares.
 - If access to the music was refused twice, Android stops asking: Home then offers **Open
   settings**, where you allow "Music and audio".
 
@@ -60,10 +62,16 @@ in the Server field fills in the rest.
 
 ## YouTube Music
 
-- Search with suggestions; results as **Songs**, **Videos**, **Albums**, **Artists**.
+- Search with suggestions; results as **Songs**, **Other versions** (live, covers, uploads; always played as sound only), **Albums**, **Artists**.
 - Album and artist pages (top songs, albums, singles, similar artists).
 - **Start mix** plays an endless radio from a track.
-- From the YouTube app or a browser, **Share › Chud Music** plays a YouTube or YouTube Music link.
+- **Paste a link** in the search box, as in the PC app: a YouTube or YouTube Music song, playlist,
+  album or artist, or a Spotify song, album, playlist or artist. A Spotify link only names
+  songs: each one is looked up on YouTube Music (title, artists, duration), and those with no
+  close enough version are listed apart, one tap away from a search. **Save as playlist** keeps
+  the result.
+- From the YouTube or Spotify app or a browser, **Share › Chud Music**: a song plays at once, a
+  playlist or an album opens as above.
 - No Google account, no ads. YouTube Music tracks go into playlists like any other.
 - **Settings › YouTube Music › Prefer Opus**: best quality; switch it off if an old Bluetooth
   device plays badly (AAC is used instead).
@@ -71,6 +79,8 @@ in the Server field fills in the rest.
 ## Playlists
 
 - **+ New playlist**, or ⋮ › "Add to a playlist" from a track, an album…
+- An empty playlist offers **Import from a link**: paste a YouTube, YouTube Music or Spotify
+  playlist (or album) link and its tracks are found on YouTube Music and added to it.
 - In a playlist: the ≡ handle reorders, ⋮ › "Remove from playlist" takes a track out; rename
   and delete are in the playlist's menu (your files are not touched).
 - Tracks that cannot be found (file gone, share off) stay in the playlist, greyed.
@@ -81,7 +91,8 @@ in the Server field fills in the rest.
 ## Radio
 
 Popular stations, genres, countries, worldwide search. The star adds a station to **Favorites**,
-which then opens first. The title on air is shown when the station sends it; its lyrics are
+which then opens first. The list a station was started from becomes the queue: "next" and
+"previous" (lock screen, headset) change station. The title on air is shown when the station sends it; its lyrics are
 looked up too.
 
 ## Player
@@ -91,6 +102,9 @@ looked up too.
 - **Lyrics**: synced when LRCLIB has them, plain otherwise. "Search differently" lets you correct
   the title or the artist.
 - Controls are also in the notification, on the lock screen, on Bluetooth headsets and cars.
+  **Settings › Playback** says whether the app's notifications are on; if the controls are
+  missing from the lock screen, check in the phone's settings that the lock screen shows
+  notifications and media.
 - A track that cannot be played (missing file, unsupported format, share unreachable) is skipped
   with one message; the music goes on.
 

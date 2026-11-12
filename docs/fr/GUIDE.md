@@ -26,6 +26,8 @@ Le mini-lecteur au-dessus des onglets ouvre le lecteur complet.
   vocales…) pour le laisser hors de la bibliothèque. Rien n'est supprimé.
 - **Réanalyser** relit tout de suite le téléphone et les partages réseau.
 - « Retirer de la bibliothèque » masque un morceau ; il revient à la prochaine analyse.
+- Une analyse interrompue (application fermée, téléphone éteint) reprend là où elle s'était
+  arrêtée au lancement suivant : ce qui était déjà lu est gardé. De même pour les partages réseau.
 - Si l'accès à la musique a été refusé deux fois, Android ne repose plus la question : l'Accueil
   propose alors **Ouvrir les réglages**, où vous autorisez « Musique et audio ».
 
@@ -59,11 +61,16 @@ rien n'est lu ni écrit sur les serveurs. Vous pouvez aussi tout saisir à la ma
 
 ## YouTube Music
 
-- Recherche avec suggestions ; résultats par **Titres**, **Albums**, **Artistes**, **Vidéos**.
+- Recherche avec suggestions ; résultats par **Titres**, **Autres versions** (live, reprises, mises en ligne ; toujours lues en son seul), **Albums**, **Artistes**.
 - Pages album et artiste (titres populaires, albums, singles, artistes similaires).
 - **Démarrer le mix** lance une radio sans fin à partir d'un morceau.
-- Depuis l'application YouTube ou un navigateur, **Partager › Chud Music** un lien YouTube ou
-  YouTube Music le lit directement.
+- **Collez un lien** dans la recherche, comme dans l'application PC : un morceau, une playlist,
+  un album ou un artiste YouTube ou YouTube Music, ou un morceau, un album, une playlist ou un
+  artiste Spotify. Un lien Spotify ne nomme que des chansons : chacune est cherchée sur YouTube
+  Music (titre, artistes, durée), et celles sans version assez proche sont listées à part, à un
+  toucher d'une recherche. **Enregistrer en playlist** garde le résultat.
+- Depuis l'application YouTube ou Spotify ou un navigateur, **Partager › Chud Music** : un
+  morceau se lit tout de suite, une playlist ou un album s'ouvre comme ci-dessus.
 - Sans compte Google et sans publicité. Les morceaux s'ajoutent aux playlists comme les autres.
 - **Paramètres › YouTube Music › Préférer le format Opus** : meilleure qualité ; à désactiver si
   un vieil appareil Bluetooth lit mal (AAC à la place).
@@ -71,6 +78,9 @@ rien n'est lu ni écrit sur les serveurs. Vous pouvez aussi tout saisir à la ma
 ## Playlists
 
 - **+ Nouvelle playlist**, ou ⋮ › « Ajouter à une playlist » depuis un morceau, un album…
+- Une playlist vide propose **Importer depuis un lien** : collez le lien d'une playlist (ou d'un
+  album) YouTube, YouTube Music ou Spotify ; ses morceaux sont retrouvés sur YouTube Music et
+  ajoutés.
 - Dans une playlist : la poignée ≡ réordonne, ⋮ › « Retirer de la playlist » enlève un morceau ;
   la playlist se renomme et se supprime depuis son menu (vos fichiers ne sont pas touchés).
 - « Remplacer les titres YouTube par mes fichiers » remplace, quand c'est possible, les morceaux
@@ -81,7 +91,8 @@ rien n'est lu ni écrit sur les serveurs. Vous pouvez aussi tout saisir à la ma
 ## Radio
 
 Populaires, genres, pays, recherche dans le monde entier. L'étoile ajoute une radio aux
-**Favoris**. Le titre en cours s'affiche quand la radio l'indique ; les paroles sont alors
+**Favoris**. La liste d'où une radio est lancée devient la file : « suivant » et « précédent »
+(écran verrouillé, casque) changent de station. Le titre en cours s'affiche quand la radio l'indique ; les paroles sont alors
 cherchées aussi.
 
 ## Lecteur
@@ -92,7 +103,9 @@ cherchées aussi.
 - **Paroles** : synchronisées quand LRCLIB les a, sinon simples. « Rechercher autrement » permet
   de corriger le titre ou l'artiste.
 - Les commandes sont aussi dans la notification, sur l'écran verrouillé, sur un casque ou une
-  voiture Bluetooth.
+  voiture Bluetooth. **Paramètres › Lecture** indique si les notifications de l'application sont
+  autorisées ; si les commandes manquent sur l'écran verrouillé, vérifiez dans les réglages du
+  téléphone que l'écran de verrouillage affiche les notifications et le contenu multimédia.
 
 ## Statistiques
 

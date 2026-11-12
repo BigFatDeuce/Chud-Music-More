@@ -2,19 +2,23 @@
 
 *[Version française](fr/TESTS.md)*
 
-State on 12 November 2026, version 0.2.0. Everything below was done on the **Android 16
+State on 12 November 2026, version 0.3.0. Everything below was done on the **Android 16
 emulator (API 36)**, with the debug build and with the signed, minified release build. The
 author's test servers were Samba and rclone (WebDAV) running in WSL.
 
 ## Checked automatically
 
-`./gradlew testDebugUnitTest`: 42 unit tests, of which 9 only run on request (5 against the
+`./gradlew testDebugUnitTest`: 55 unit tests, of which 10 only run on request (6 against the
 Internet services, 4 against an SMB server). All pass.
 
 - Playlist exchange with the PC app (JSON and M3U8, both ways, path matching).
 - Equalizer maths, synced lyrics parsing, version order.
 - The state machines listed in [STATE-MACHINES.md](STATE-MACHINES.md): player phase, playback
-  errors, scan, YouTube search paging, network search, permission, random draw, release notes.
+  errors, scan, YouTube search paging, network search, permission, random draw, release notes,
+  pasted links, scan resumed after a stop.
+- Links (`LinksTest`): YouTube and Spotify link parsing (same cases as the PC app), the matcher
+  shared with the PC app, Spotify's embed page; online, a 140-track YouTube playlist read past
+  its first page and a Spotify album found on YouTube Music.
 - SMB against a real server: share list without hidden shares, wrong password, reading after
   40 s of silence, a connection cut by the server.
 
@@ -27,12 +31,17 @@ Internet services, 4 against an SMB server). All pass.
   browser, saves, scans and plays. Same in the release build.
 - SMB (user and password) and WebDAV (HTTP, read-only): test, scan, playback (FLAC included).
 - An SMB track starts within seconds after the connection sat idle for 50 s.
+- A share scan of 600 new files stopped at about 240 (app force-stopped): at the next start
+  only the remaining 325 were read, ending with every file in the library.
 - No music file is modified or deleted: the test servers were read-only.
 
 **YouTube Music**
 - Search, suggestions, the four filters, further pages while scrolling.
 - Playback without ads (Opus, the default; the AAC option was not tried on its own).
 - Album and artist pages, "Start mix", a `music.youtube.com` link shared to the app.
+- Links: a Spotify album typed in the search (14 of 14 found, in order, saved as a playlist);
+  a Spotify playlist imported into an empty playlist (50 of 50 found and added); a YouTube
+  playlist shared from another app (140 tracks, played).
 
 **Playlists and the PC app**
 - Import of a JSON in the PC's format: Windows path → phone file; `\\10.0.2.2\Musique\…` → SMB
@@ -58,7 +67,7 @@ Internet services, 4 against an SMB server). All pass.
 
 ## Not checked
 
-- A **real phone** (Bluetooth headset or car included) and **Android Auto**.
+- **Android Auto**.
 - A real **NAS**, a Windows share with an account, **Nextcloud** over HTTPS.
 - Network search on a real Wi-Fi: **server names** (NetBIOS) and servers that **announce
   themselves** (mDNS, which is how WebDAV servers are found) cannot be seen from the emulator.

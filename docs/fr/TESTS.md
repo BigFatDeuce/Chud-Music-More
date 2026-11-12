@@ -2,20 +2,23 @@
 
 *[English version](../TESTING.md)*
 
-État au 12 novembre 2026, version 0.2.0. Tout ce qui suit a été fait sur l'**émulateur Android 16
+État au 12 novembre 2026, version 0.3.0. Tout ce qui suit a été fait sur l'**émulateur Android 16
 (API 36)**, en version debug puis en version release signée et optimisée. Les serveurs de test
 étaient Samba et rclone (WebDAV) dans WSL.
 
 ## Vérifié automatiquement
 
-`./gradlew testDebugUnitTest` : 42 tests unitaires, dont 9 ne tournent que sur demande (5 contre
+`./gradlew testDebugUnitTest` : 55 tests unitaires, dont 10 ne tournent que sur demande (6 contre
 les services Internet, 4 contre un serveur SMB). Tous passent.
 
 - Échange de playlists avec le PC (JSON et M3U8, dans les deux sens, correspondance des chemins).
 - Calculs de l'égaliseur, lecture des paroles synchronisées, ordre des versions.
 - Les machines à états listées dans [STATE-MACHINES.md](../STATE-MACHINES.md) : phase du lecteur,
   erreurs de lecture, analyse, pages de la recherche YouTube, recherche réseau, autorisation,
-  tirage au hasard, notes de version.
+  tirage au hasard, notes de version, liens collés, analyse reprise après un arrêt.
+- Liens (`LinksTest`) : lecture des liens YouTube et Spotify (mêmes cas que l'application PC), le
+  rapprochement partagé avec le PC, la page d'intégration Spotify ; en ligne, une playlist YouTube
+  de 140 morceaux lue au-delà de sa première page et un album Spotify retrouvé sur YouTube Music.
 - SMB contre un vrai serveur : liste des partages sans les partages cachés, mauvais mot de passe,
   lecture après 40 s de silence, connexion coupée par le serveur.
 
@@ -29,12 +32,17 @@ les services Internet, 4 contre un serveur SMB). Tous passent.
 - SMB (utilisateur et mot de passe) et WebDAV (HTTP, lecture seule) : test, analyse, lecture
   (dont FLAC).
 - Un morceau SMB démarre en quelques secondes après 50 s de connexion inactive.
+- Une analyse de partage de 600 nouveaux fichiers arrêtée vers 240 (application tuée) : au
+  lancement suivant, seuls les 325 restants ont été lus, et tous les fichiers sont arrivés.
 - Aucun fichier musical n'est modifié ni supprimé : les serveurs de test étaient en lecture seule.
 
 **YouTube Music**
 - Recherche, suggestions, les quatre filtres, pages suivantes en défilant.
 - Lecture sans publicité (Opus, par défaut ; le choix AAC n'a pas été essayé à part).
 - Pages album et artiste, « Démarrer le mix », lien `music.youtube.com` partagé vers l'application.
+- Liens : un album Spotify tapé dans la recherche (14 sur 14 retrouvés, dans l'ordre, enregistré
+  en playlist) ; une playlist Spotify importée dans une playlist vide (50 sur 50 retrouvés et
+  ajoutés) ; une playlist YouTube partagée depuis une autre application (140 morceaux, lue).
 
 **Playlists et application PC**
 - Import d'un JSON au format du PC : chemin Windows → fichier du téléphone ; `\\10.0.2.2\Musique\…`
@@ -62,7 +70,7 @@ les services Internet, 4 contre un serveur SMB). Tous passent.
 
 ## Non vérifié
 
-- Un **vrai téléphone** (casque ou voiture Bluetooth compris) et **Android Auto**.
+- **Android Auto**.
 - Un vrai **NAS**, un partage Windows avec compte, un **Nextcloud** en HTTPS.
 - La recherche réseau sur un vrai Wi-Fi : les **noms des serveurs** (NetBIOS) et les serveurs qui
   **s'annoncent** (mDNS, c'est ainsi que les serveurs WebDAV sont trouvés) ne sont pas visibles
