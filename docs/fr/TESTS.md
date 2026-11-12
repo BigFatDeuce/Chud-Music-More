@@ -57,7 +57,8 @@ les services Internet, 4 contre un serveur SMB). Tous passent.
   ancienne, téléchargée, SHA-256 vérifié, installée par-dessus, données conservées. Une version
   trouvée reste proposée après un redémarrage ; pastille sur l'engrenage de l'Accueil ; notes de
   version avec gras et puces.
-- 0.2.0 installée par-dessus la 0.1.0 (à la main) : playlists conservées.
+- 0.1.0 → 0.2.0, toutes deux telles que publiées sur GitHub : l'application a trouvé la nouvelle
+  version seule au démarrage, l'a téléchargée et installée ; la playlist a été conservée.
 
 ## Non vérifié
 

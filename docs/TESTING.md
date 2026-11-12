@@ -53,7 +53,8 @@ Internet services, 4 against an SMB server). All pass.
 - Updates, with the real GitHub release 0.1.0: found from an older test build, downloaded,
   SHA-256 checked, installed over it, data kept. A version found is still offered after a restart;
   the dot on Home's gear; release notes with bold text and bullets.
-- 0.2.0 installed over 0.1.0 (by hand): playlists kept.
+- 0.1.0 → 0.2.0, both as published on GitHub: the app found the new version by itself at
+  start-up, downloaded it and installed it; the playlist was kept.
 
 ## Not checked
 
