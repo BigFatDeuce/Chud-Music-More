@@ -1,25 +1,32 @@
-<h1 align="center">Chud Music for Android</h1>
+<div align="center">
 
-<p align="center">
-  One player for the music on your phone, on your NAS or PC, on YouTube Music and on the radio.<br>
-  No ads, no account, no tracking. Free software.<br>
-  On your computer: <a href="https://github.com/BigFatDeuce/Chud-Music"><b>Chud Music for Windows and Linux</b></a>.
-</p>
+<img src="docs/images/logo.svg" width="112" alt="Chud Music logo">
 
-<p align="center">
-  <a href="https://github.com/BigFatDeuce/Chud-Music-More/releases/latest"><img alt="Latest release" src="https://img.shields.io/github/v/release/BigFatDeuce/Chud-Music-More?label=download&color=1f3f8f"></a>
-  <img alt="Android 8.0+" src="https://img.shields.io/badge/Android-8.0%2B-3ddc84">
-  <a href="LICENSE"><img alt="GPL-3.0" src="https://img.shields.io/badge/licence-GPL--3.0-blue"></a>
-</p>
+# Chud Music More
 
-<p align="center">
-  <img src="docs/images/home-nocturne.png" width="200" alt="Home screen, dark skin: recently played, random picks, playlists">
-  <img src="docs/images/player-nocturne.png" width="200" alt="Player, dark skin: cover, LCD display with spectrum, controls">
-  <img src="docs/images/network-platine.png" width="200" alt="Adding a network share, light skin: server found on the network and its shared folders">
-  <img src="docs/images/library-platine.png" width="200" alt="Library, light skin: albums">
-</p>
+**Chud Music for Android.**
+The music on your phone, on your NAS or PC, on YouTube Music and on the radio, in one app.
+No ads, no account, no tracking. Free software.
 
-<p align="center"><a href="docs/fr/README.md">Français</a></p>
+[![Latest release](https://img.shields.io/github/v/release/BigFatDeuce/Chud-Music-More?label=release&color=c6ff2e&labelColor=101216)](https://github.com/BigFatDeuce/Chud-Music-More/releases/latest)
+[![Downloads](https://img.shields.io/github/downloads/BigFatDeuce/Chud-Music-More/total?label=downloads&color=3fd8ff&labelColor=101216)](https://github.com/BigFatDeuce/Chud-Music-More/releases)
+![Android](https://img.shields.io/badge/Android-8.0%2B-3ddc84?labelColor=101216)
+[![GPL-3.0](https://img.shields.io/badge/licence-GPL--3.0-ffb21f?labelColor=101216)](LICENSE)
+
+[**Download**](#install) · [What it plays](#what-it-plays) · [Features](#features) · [Documentation](#documentation) · [Privacy](#privacy) · [Français](docs/fr/README.md) · [PC: Chud Music](https://github.com/BigFatDeuce/Chud-Music)
+
+<img src="docs/images/home-nocturne.png" width="200" alt="Home screen, dark skin: recently played, random picks, playlists">
+<img src="docs/images/player-nocturne.png" width="200" alt="Player, dark skin: cover, LCD display with spectrum, controls">
+<img src="docs/images/network-platine.png" width="200" alt="Adding a network share, light skin: server found on the network and its shared folders">
+<img src="docs/images/library-platine.png" width="200" alt="Library, light skin: albums">
+
+</div>
+
+> **Languages:** English and French. Chud Music follows your phone's language.
+
+**On Windows or Linux?** Try [**Chud Music**](https://github.com/BigFatDeuce/Chud-Music), the desktop
+music player, modern and retro: your files, YouTube Music, world radio, synced lyrics, MilkDrop
+visualizer, five skins. Playlists go from one to the other.
 
 ## What it plays
 

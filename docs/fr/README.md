@@ -1,6 +1,18 @@
-# Chud Music pour Android
+<div align="center">
 
-*[English version](../../README.md)*
+<img src="../images/logo.svg" width="112" alt="Logo de Chud Music">
+
+# Chud Music More
+
+**Chud Music pour Android.**
+
+[![Dernière version](https://img.shields.io/github/v/release/BigFatDeuce/Chud-Music-More?label=version&color=c6ff2e&labelColor=101216)](https://github.com/BigFatDeuce/Chud-Music-More/releases/latest)
+![Android](https://img.shields.io/badge/Android-8.0%2B-3ddc84?labelColor=101216)
+[![GPL-3.0](https://img.shields.io/badge/licence-GPL--3.0-ffb21f?labelColor=101216)](../../LICENSE)
+
+[**Télécharger**](https://github.com/BigFatDeuce/Chud-Music-More/releases/latest) · [English](../../README.md) · [PC : Chud Music](https://github.com/BigFatDeuce/Chud-Music)
+
+</div>
 
 Le lecteur de musique Chud Music, version téléphone. Il lit votre musique là où elle est :
 
