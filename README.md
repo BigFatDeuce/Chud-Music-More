@@ -2,7 +2,8 @@
 
 <p align="center">
   One player for the music on your phone, on your NAS or PC, on YouTube Music and on the radio.<br>
-  No ads, no account, no tracking. Free software.
+  No ads, no account, no tracking. Free software.<br>
+  On your computer: <a href="https://github.com/BigFatDeuce/Chud-Music"><b>Chud Music for Windows and Linux</b></a>.
 </p>
 
 <p align="center">
@@ -39,7 +40,7 @@ Chud Music never modifies, moves or deletes a music file, on the phone or on a s
   recent additions.
 - **Player** with queue, shuffle, repeat, playback speed, a **10-band equalizer** with presets, a
   live spectrum and **synced lyrics** (from [LRCLIB](https://lrclib.net)).
-- **Playlists shared with Chud Music for PC**, both ways (JSON, M3U, M3U8). Tracks are found again
+- **Playlists shared with [Chud Music for PC](https://github.com/BigFatDeuce/Chud-Music)**, both ways (JSON, M3U, M3U8). Tracks are found again
   on the other device even when their paths differ.
 - **Listening statistics**: time, streaks, favourite tracks, artists, albums and stations. They
   stay on the phone.

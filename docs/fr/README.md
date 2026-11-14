@@ -10,7 +10,8 @@ Le lecteur de musique Chud Music, version téléphone. Il lit votre musique là 
 - **sur YouTube Music**, sans publicité et sans compte Google ;
 - **à la radio** : des milliers de radios en ligne (annuaire libre Radio Browser).
 
-Les playlists s'échangent dans les deux sens avec **Chud Music pour PC** (JSON, M3U, M3U8).
+Les playlists s'échangent dans les deux sens avec **[Chud Music pour PC](https://github.com/BigFatDeuce/Chud-Music)**
+(Windows et Linux ; JSON, M3U, M3U8).
 
 > Chud Music ne modifie ni ne supprime jamais vos fichiers musicaux, sur le téléphone comme sur le réseau.
 
