@@ -2,7 +2,7 @@
 
 *[Version française](fr/TESTS.md)*
 
-State on 12 November 2026, version 0.3.0. Everything below was done on the **Android 16
+State on 15 November 2026, version 0.3.1. Everything below was done on the **Android 16
 emulator (API 36)**, with the debug build and with the signed, minified release build. The
 author's test servers were Samba and rclone (WebDAV) running in WSL.
 
@@ -46,7 +46,7 @@ Internet services, 4 against an SMB server). All pass.
   playlist shared from another app (140 tracks, played).
 - Links **pasted** in the search box (15 November): a bare link, a share sentence around a link
   ("Listen to … : https://…"), and a link pasted after a typed word all open the song at once
-  (the last two from the version after 0.3.0).
+  (the last two since 0.3.1).
 
 **Playlists and the PC app**
 - Import of a JSON in the PC's format: Windows path → phone file; `\\10.0.2.2\Musique\…` → SMB

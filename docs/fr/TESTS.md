@@ -2,7 +2,7 @@
 
 *[English version](../TESTING.md)*
 
-État au 12 novembre 2026, version 0.3.0. Tout ce qui suit a été fait sur l'**émulateur Android 16
+État au 15 novembre 2026, version 0.3.1. Tout ce qui suit a été fait sur l'**émulateur Android 16
 (API 36)**, en version debug puis en version release signée et optimisée. Les serveurs de test
 étaient Samba et rclone (WebDAV) dans WSL.
 
@@ -48,7 +48,7 @@ les services Internet, 4 contre un serveur SMB). Tous passent.
   ajoutés) ; une playlist YouTube partagée depuis une autre application (140 morceaux, lue).
 - Liens **collés** dans la recherche (15 novembre) : un lien seul, une phrase de partage autour
   d'un lien (« Écoute … : https://… ») et un lien collé après un mot tapé ouvrent tous le morceau
-  aussitôt (les deux derniers à partir de la version qui suit la 0.3.0).
+  aussitôt (les deux derniers depuis la 0.3.1).
 
 **Playlists et application PC**
 - Import d'un JSON au format du PC : chemin Windows → fichier du téléphone ; `\\10.0.2.2\Musique\…`
