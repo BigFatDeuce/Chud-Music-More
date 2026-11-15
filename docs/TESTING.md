@@ -8,7 +8,7 @@ author's test servers were Samba and rclone (WebDAV) running in WSL.
 
 ## Checked automatically
 
-`./gradlew testDebugUnitTest`: 55 unit tests, of which 10 only run on request (6 against the
+`./gradlew testDebugUnitTest`: 56 unit tests, of which 10 only run on request (6 against the
 Internet services, 4 against an SMB server). All pass.
 
 - Playlist exchange with the PC app (JSON and M3U8, both ways, path matching).
@@ -33,6 +33,8 @@ Internet services, 4 against an SMB server). All pass.
 - An SMB track starts within seconds after the connection sat idle for 50 s.
 - A share scan of 600 new files stopped at about 240 (app force-stopped): at the next start
   only the remaining 325 were read, ending with every file in the library.
+- A first phone scan of 1,200 tracks (100 albums) stopped after 400 (app force-stopped): at the
+  next start it went on and ended with all 1,200, in half the time of a full scan (15 November).
 - No music file is modified or deleted: the test servers were read-only.
 
 **YouTube Music**
@@ -42,6 +44,9 @@ Internet services, 4 against an SMB server). All pass.
 - Links: a Spotify album typed in the search (14 of 14 found, in order, saved as a playlist);
   a Spotify playlist imported into an empty playlist (50 of 50 found and added); a YouTube
   playlist shared from another app (140 tracks, played).
+- Links **pasted** in the search box (15 November): a bare link, a share sentence around a link
+  ("Listen to … : https://…"), and a link pasted after a typed word all open the song at once
+  (the last two from the version after 0.3.0).
 
 **Playlists and the PC app**
 - Import of a JSON in the PC's format: Windows path → phone file; `\\10.0.2.2\Musique\…` → SMB

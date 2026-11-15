@@ -8,7 +8,7 @@
 
 ## Vérifié automatiquement
 
-`./gradlew testDebugUnitTest` : 55 tests unitaires, dont 10 ne tournent que sur demande (6 contre
+`./gradlew testDebugUnitTest` : 56 tests unitaires, dont 10 ne tournent que sur demande (6 contre
 les services Internet, 4 contre un serveur SMB). Tous passent.
 
 - Échange de playlists avec le PC (JSON et M3U8, dans les deux sens, correspondance des chemins).
@@ -34,6 +34,9 @@ les services Internet, 4 contre un serveur SMB). Tous passent.
 - Un morceau SMB démarre en quelques secondes après 50 s de connexion inactive.
 - Une analyse de partage de 600 nouveaux fichiers arrêtée vers 240 (application tuée) : au
   lancement suivant, seuls les 325 restants ont été lus, et tous les fichiers sont arrivés.
+- Une première analyse du téléphone de 1 200 morceaux (100 albums) arrêtée après 400 (application
+  tuée) : au lancement suivant, elle a continué jusqu'aux 1 200, en deux fois moins de temps qu'une
+  analyse complète (15 novembre).
 - Aucun fichier musical n'est modifié ni supprimé : les serveurs de test étaient en lecture seule.
 
 **YouTube Music**
@@ -43,6 +46,9 @@ les services Internet, 4 contre un serveur SMB). Tous passent.
 - Liens : un album Spotify tapé dans la recherche (14 sur 14 retrouvés, dans l'ordre, enregistré
   en playlist) ; une playlist Spotify importée dans une playlist vide (50 sur 50 retrouvés et
   ajoutés) ; une playlist YouTube partagée depuis une autre application (140 morceaux, lue).
+- Liens **collés** dans la recherche (15 novembre) : un lien seul, une phrase de partage autour
+  d'un lien (« Écoute … : https://… ») et un lien collé après un mot tapé ouvrent tous le morceau
+  aussitôt (les deux derniers à partir de la version qui suit la 0.3.0).
 
 **Playlists et application PC**
 - Import d'un JSON au format du PC : chemin Windows → fichier du téléphone ; `\\10.0.2.2\Musique\…`
