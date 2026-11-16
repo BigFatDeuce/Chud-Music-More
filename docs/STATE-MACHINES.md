@@ -39,6 +39,7 @@ ceremony.
 | Playback error | `RETRY_SAME` `SKIP_NEXT` `STOP` `STOP_ALL` | `PlaybackService.ErrorAction`, `ErrorPolicy.decide()` | `aBadTrackIsSkippedButNeverInALoop`, `anExpiredYoutubeAddressIsRetriedOncePerTrack` |
 | Library scan | `Idle(lastError)` `Running(source, done, total)` | `ScanState` in `library/Scanner.kt` | `scanStateSaysWhatIsRead` |
 | Scan stopped halfway | written by batches; asked-for network scans remembered until they end | `BatchWriter`, `Scanner.mustScan()`, `LocalScanner.isUpToDate()`, `Settings.scanUnfinished` | `LinksTest`: `networkScanRules`, `batchWriterKeepsEverythingInOrderOfBatches`, `phoneTrackUpToDate` |
+| Background scan queue | requests waiting, one running (WorkManager unique work `library-scan`) | `ScanRequest.mustQueue()`, `Scanner.request()`, `ScanWorker` | `LinksTest`: `scanRequestsQueueWithoutPilingUp`; on the emulator |
 | Pasted or shared link | `Reading` `Ready(slots: Pending/Found/Missing, added)` `Elsewhere(target)` `Failed(reason)` | `LinkImport` in `youtube/LinkImport.kt`, `Ready.resolve()`, run by `LinkImports` | `LinksTest`: `linkImportSettlesEachSlotOnce` |
 | YouTube Music search | `Idle` `Loading` `Results(loadingMore)` `Failed` | `YtSearch` in `ui/youtube/YouTubeScreen.kt`, `Results.plus()` | `searchResultsGrowPageByPageWithoutDuplicates` |
 | Page load (album, artist, mix, radio list) | `Loading` `Ok(value)` `Err(message)` | `Load` and `Loader` in `ui/components/Loader.kt` | on the emulator |
@@ -100,10 +101,19 @@ Idle ──scanNetwork()──▶ Running(place 1) ──▶ Running(place 2) �
 One scan at a time (a mutex): a second request waits, it never interleaves. A scan that is
 cancelled or throws still ends in `Idle`.
 
-A scan stopped halfway (the app closed, the phone switched off) loses at most one batch: tracks
-are written 200 (phone) or 25 (network) at a time, and the next scan skips what is already up to
-date (phone: same file, same date, cover found; network: same size and date). A network scan the
-user asked for is noted in `Settings.scanUnfinished` until it ends, so it goes on at the next
+Scans run in the background: `Scanner.request()` queues a `ScanRequest` as WorkManager work
+(`ScanWorker`), one after the other. The worker runs as a foreground job with a progress
+notification, so the scan goes on with another app in front or the screen off. A request is
+dropped when one still waiting already covers it (`ScanRequest.mustQueue()`). When the job starts
+while the app is in the background (the 6-hour network scan), Android refuses the foreground
+notification and it runs as an ordinary job.
+
+A scan stopped halfway (app killed, phone switched off, Android's time limit) loses at most one
+batch: tracks are written 200 (phone) or 25 (network) at a time. WorkManager runs the stopped job
+again by itself, and it skips what is already up to date (phone: same file, same date, cover found
+or already searched in vain, see `CoverStore.knownWithout()`; network: same size and date). The
+counter goes on from what is done ("400/1200"), it does not start again from 0. A network scan
+the user asked for is noted in `Settings.scanUnfinished` until it ends, so it goes on at the next
 start even away from Wi-Fi.
 
 ### Pasted or shared link

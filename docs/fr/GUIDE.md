@@ -19,6 +19,7 @@ Le mini-lecteur au-dessus des onglets ouvre le lecteur complet.
   lancement. Le tirage reste le même tant que l'application tourne ; le bouton ⟳ en tire d'autres.
 - Vos playlists, les albums ajoutés récemment, vos radios favorites.
 - Un point sur l'engrenage signale qu'une nouvelle version attend dans Paramètres › Mises à jour.
+- **Paramètres › Page d'accueil** choisit lesquelles de ces sections l'Accueil affiche.
 
 ## Musique du téléphone
 
@@ -26,8 +27,10 @@ Le mini-lecteur au-dessus des onglets ouvre le lecteur complet.
   vocales…) pour le laisser hors de la bibliothèque. Rien n'est supprimé.
 - **Réanalyser** relit tout de suite le téléphone et les partages réseau.
 - « Retirer de la bibliothèque » masque un morceau ; il revient à la prochaine analyse.
-- Une analyse interrompue (application fermée, téléphone éteint) reprend là où elle s'était
-  arrêtée au lancement suivant : ce qui était déjà lu est gardé. De même pour les partages réseau.
+- L'analyse continue en arrière-plan, avec une autre application ouverte ou l'écran éteint : une
+  notification montre où elle en est. Si Android l'arrête (application fermée, téléphone éteint),
+  elle reprend d'elle-même là où elle s'était arrêtée, sans tout recommencer : ce qui était déjà
+  lu est gardé. De même pour les partages réseau.
 - Si l'accès à la musique a été refusé deux fois, Android ne repose plus la question : l'Accueil
   propose alors **Ouvrir les réglages**, où vous autorisez « Musique et audio ».
 
@@ -72,6 +75,10 @@ rien n'est lu ni écrit sur les serveurs. Vous pouvez aussi tout saisir à la ma
 - Depuis l'application YouTube ou Spotify ou un navigateur, **Partager › Chud Music** : un
   morceau se lit tout de suite, une playlist ou un album s'ouvre comme ci-dessus.
 - Sans compte Google et sans publicité. Les morceaux s'ajoutent aux playlists comme les autres.
+- **Masquer un artiste** : ⋮ sur l'un de ses morceaux › *Masquer « … »*, ou l'œil barré sur sa
+  page. Il n'apparaît plus dans les recherches, les mix, les pages d'artiste ni les playlists
+  YouTube partagées. Vos playlists et votre bibliothèque ne sont pas touchées. **Paramètres ›
+  YouTube Music › Artistes masqués** le rétablit.
 - **Paramètres › YouTube Music › Préférer le format Opus** : meilleure qualité ; à désactiver si
   un vieil appareil Bluetooth lit mal (AAC à la place).
 
@@ -83,6 +90,9 @@ rien n'est lu ni écrit sur les serveurs. Vous pouvez aussi tout saisir à la ma
   ajoutés.
 - Dans une playlist : la poignée ≡ réordonne, ⋮ › « Retirer de la playlist » enlève un morceau ;
   la playlist se renomme et se supprime depuis son menu (vos fichiers ne sont pas touchés).
+- **Supprimer toutes les playlists** (la corbeille rouge en haut de Playlists) demande deux
+  confirmations avant de tout supprimer ; c'est irréversible, alors utilisez d'abord
+  **Tout exporter** pour en garder une copie.
 - « Remplacer les titres YouTube par mes fichiers » remplace, quand c'est possible, les morceaux
   YouTube Music par le même morceau de votre bibliothèque.
 - Les morceaux introuvables (fichier absent, partage éteint) restent dans la playlist, grisés.

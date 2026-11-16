@@ -19,6 +19,7 @@ mini player above them opens the full player.
   draw stays the same while the app runs; the ⟳ button draws others.
 - Your playlists, recently added albums, favourite stations.
 - A dot on the gear means a new version is waiting in Settings › Updates.
+- **Settings › Home page** chooses which of these shelves Home shows.
 
 ## Music on the phone
 
@@ -26,8 +27,10 @@ mini player above them opens the full player.
   of the library. Nothing is deleted.
 - **Rescan** reads the phone and the network shares again right away.
 - "Remove from library" hides a track; it comes back at the next scan.
-- A scan stopped halfway (app closed, phone switched off) goes on where it stopped at the next
-  start: what was already read is kept. The same goes for network shares.
+- A scan goes on in the background, with another app open or the screen off: a notification
+  shows its progress. If Android stops it (app closed, phone switched off), it goes on by itself
+  where it stopped, without starting over: what was already read is kept. The same goes for
+  network shares.
 - If access to the music was refused twice, Android stops asking: Home then offers **Open
   settings**, where you allow "Music and audio".
 
@@ -73,6 +76,9 @@ in the Server field fills in the rest.
 - From the YouTube or Spotify app or a browser, **Share › Chud Music**: a song plays at once, a
   playlist or an album opens as above.
 - No Google account, no ads. YouTube Music tracks go into playlists like any other.
+- **Hide an artist**: ⋮ on one of their songs › *Hide “…”*, or the crossed-out eye on their page.
+  They no longer appear in searches, mixes, artist pages or shared YouTube playlists. Your own
+  playlists and library are not touched. **Settings › YouTube Music › Hidden artists** restores them.
 - **Settings › YouTube Music › Prefer Opus**: best quality; switch it off if an old Bluetooth
   device plays badly (AAC is used instead).
 
@@ -83,6 +89,8 @@ in the Server field fills in the rest.
   playlist (or album) link and its tracks are found on YouTube Music and added to it.
 - In a playlist: the ≡ handle reorders, ⋮ › "Remove from playlist" takes a track out; rename
   and delete are in the playlist's menu (your files are not touched).
+- **Delete all playlists** (the red bin at the top of Playlists) asks twice before deleting
+  every playlist; it cannot be undone, so use **Export all** first to keep a copy.
 - Tracks that cannot be found (file gone, share off) stay in the playlist, greyed.
 - "Replace YouTube tracks with my files" swaps, where possible, YouTube Music tracks for the same
   track in your library.

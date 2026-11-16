@@ -2,13 +2,13 @@
 
 *[English version](../TESTING.md)*
 
-État au 15 novembre 2026, version 0.3.1. Tout ce qui suit a été fait sur l'**émulateur Android 16
+État au 16 novembre 2026, version 0.3.2. Tout ce qui suit a été fait sur l'**émulateur Android 16
 (API 36)**, en version debug puis en version release signée et optimisée. Les serveurs de test
 étaient Samba et rclone (WebDAV) dans WSL.
 
 ## Vérifié automatiquement
 
-`./gradlew testDebugUnitTest` : 56 tests unitaires, dont 10 ne tournent que sur demande (6 contre
+`./gradlew testDebugUnitTest` : 60 tests unitaires, dont 10 ne tournent que sur demande (6 contre
 les services Internet, 4 contre un serveur SMB). Tous passent.
 
 - Échange de playlists avec le PC (JSON et M3U8, dans les deux sens, correspondance des chemins).
@@ -37,6 +37,10 @@ les services Internet, 4 contre un serveur SMB). Tous passent.
 - Une première analyse du téléphone de 1 200 morceaux (100 albums) arrêtée après 400 (application
   tuée) : au lancement suivant, elle a continué jusqu'aux 1 200, en deux fois moins de temps qu'une
   analyse complète (15 novembre).
+- Analyse en arrière-plan (16 novembre) : application passée en arrière-plan et mode Doze forcé,
+  l'analyse de 1 200 morceaux est allée au bout en tâche de premier plan avec sa notification ;
+  écran éteint et processus tué à 200, Android l'a relancé tout seul et l'analyse a continué
+  jusqu'à 1 200 sans ouvrir l'application. Version release : l'analyse démarre en tâche de premier plan.
 - Aucun fichier musical n'est modifié ni supprimé : les serveurs de test étaient en lecture seule.
 
 **YouTube Music**
@@ -49,16 +53,24 @@ les services Internet, 4 contre un serveur SMB). Tous passent.
 - Liens **collés** dans la recherche (15 novembre) : un lien seul, une phrase de partage autour
   d'un lien (« Écoute … : https://… ») et un lien collé après un mot tapé ouvrent tous le morceau
   aussitôt (les deux derniers depuis la 0.3.1).
+- Artistes masqués (16 novembre, français et anglais) : « Masquer … » dans le menu ⋮ d'un morceau
+  retire de la recherche les titres, albums et la fiche de l'artiste, y compris les morceaux qui ne
+  le citent qu'en invité dans le titre ; l'œil de la page artiste masque et rétablit ; Paramètres ›
+  YouTube Music liste l'artiste et le rétablit. Mix et playlists partagées : tests unitaires seulement.
 
 **Playlists et application PC**
 - Import d'un JSON au format du PC : chemin Windows → fichier du téléphone ; `\\10.0.2.2\Musique\…`
   → partage SMB ; `\\NAS-SALON\…` → retrouvé par la fin du chemin ; tags seuls → retrouvé par
   titre, artiste et durée ; fichier absent → gardé et grisé ; morceaux YouTube Music importés.
 - Import M3U8 ; ouverture d'un `.m3u8` depuis un gestionnaire de fichiers.
+- Supprimer toutes les playlists : les deux confirmations s'affichent (anglais et français), annuler
+  à la seconde les garde, confirmer les supprime sans toucher à la bibliothèque.
 - Exports JSON et M3U8 : comparés au format et au code d'import du PC.
 
 **Accueil, radio, lecteur, statistiques**
 - Section « Au hasard » : même tirage jusqu'à ce qu'on le relance, lecture depuis le morceau touché.
+- Paramètres › Page d'accueil : masquer « Au hasard » et « Ajoutés récemment » les retire de
+  l'Accueil, les réafficher les ramène (16 novembre).
 - Radio : stations MP3 et AAC, favoris, récentes ; s'ouvre sur Favoris quand il y en a.
 - Égaliseur, paroles synchronisées, aléatoire, répétition, file d'attente, file restaurée après
   l'arrêt de l'application.

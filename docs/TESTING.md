@@ -2,13 +2,13 @@
 
 *[Version française](fr/TESTS.md)*
 
-State on 15 November 2026, version 0.3.1. Everything below was done on the **Android 16
+State on 16 November 2026, version 0.3.2. Everything below was done on the **Android 16
 emulator (API 36)**, with the debug build and with the signed, minified release build. The
 author's test servers were Samba and rclone (WebDAV) running in WSL.
 
 ## Checked automatically
 
-`./gradlew testDebugUnitTest`: 56 unit tests, of which 10 only run on request (6 against the
+`./gradlew testDebugUnitTest`: 60 unit tests, of which 10 only run on request (6 against the
 Internet services, 4 against an SMB server). All pass.
 
 - Playlist exchange with the PC app (JSON and M3U8, both ways, path matching).
@@ -35,6 +35,10 @@ Internet services, 4 against an SMB server). All pass.
   only the remaining 325 were read, ending with every file in the library.
 - A first phone scan of 1,200 tracks (100 albums) stopped after 400 (app force-stopped): at the
   next start it went on and ended with all 1,200, in half the time of a full scan (15 November).
+- Background scan (16 November): with the app sent to the background and Doze forced, the scan of
+  1,200 tracks ran to the end as a foreground job with its notification; with the screen off and
+  the process killed at 200, Android restarted it by itself and the scan went on to 1,200 without
+  the app being opened. Release build: the scan starts as a foreground job.
 - No music file is modified or deleted: the test servers were read-only.
 
 **YouTube Music**
@@ -47,16 +51,24 @@ Internet services, 4 against an SMB server). All pass.
 - Links **pasted** in the search box (15 November): a bare link, a share sentence around a link
   ("Listen to … : https://…"), and a link pasted after a typed word all open the song at once
   (the last two since 0.3.1).
+- Hidden artists (16 November, French and English): "Hide …" from a song's ⋮ menu removes the
+  artist's songs, albums and artist entry from the search, songs that only name them as a guest
+  in the title too; the eye on the artist page hides and restores; Settings › YouTube Music lists
+  the artist and restores it. Mixes and shared playlists are covered by unit tests only.
 
 **Playlists and the PC app**
 - Import of a JSON in the PC's format: Windows path → phone file; `\\10.0.2.2\Musique\…` → SMB
   share; `\\NAS-SALON\…` → found by the end of the path; tags only → found by title, artist and
   duration; missing file → kept, greyed; YouTube Music tracks imported.
 - M3U8 import; opening an `.m3u8` from a file manager.
+- Delete all playlists: both confirmations shown (English and French), cancelling at the second
+  keeps them, confirming deletes them and leaves the library untouched.
 - JSON and M3U8 exports: compared with the PC app's format and import code.
 
 **Home, radio, player, statistics**
 - The Random shelf: same draw until redrawn, plays from the tapped track.
+- Settings › Home page: hiding Random and Recently added removes them from Home, showing them
+  again brings them back (16 November).
 - Radio: MP3 and AAC stations, favourites, recents; opens on Favourites when there are some.
 - Equalizer, synced lyrics, shuffle, repeat, queue, queue restored after the app is stopped.
 - Statistics: every section; copies of the same track are counted together.

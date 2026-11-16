@@ -44,7 +44,10 @@ Chud Music never modifies, moves or deletes a music file, on the phone or on a s
 - **Find your shares in two taps**: *Search the network* lists the PCs and NAS on your Wi-Fi and the
   folders they share; pick one and it is in your library.
 - **Home** with what you played recently, a **Random** shelf you can redraw, your playlists and
-  recent additions.
+  recent additions; each shelf can be hidden.
+- **Hide a YouTube Music artist** you never want to hear: gone from searches, mixes and artist
+  pages, and restorable from Settings.
+- **Library scan in the background**, resumed where it stopped if Android interrupts it.
 - **Player** with queue, shuffle, repeat, playback speed, a **10-band equalizer** with presets, a
   live spectrum and **synced lyrics** (from [LRCLIB](https://lrclib.net)).
 - **Playlists shared with [Chud Music for PC](https://github.com/BigFatDeuce/Chud-Music)**, both ways (JSON, M3U, M3U8). Tracks are found again
