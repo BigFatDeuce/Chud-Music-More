@@ -29,9 +29,13 @@ Les playlists s'échangent dans les deux sens avec **[Chud Music pour PC](https:
 
 ## Fonctions
 
-- Accueil : écoutés récemment, **Au hasard** (un tirage que l'on peut relancer), playlists, ajouts récents.
+- Accueil : écoutés récemment, **Au hasard** (un tirage que l'on peut relancer), playlists, ajouts récents ; chaque section se masque, un morceau ou un album s'en retire.
 - Bibliothèque : titres, albums, artistes, recherche.
-- Lecteur : file d'attente, aléatoire, répétition, égaliseur 10 bandes avec préréglages, spectre animé, paroles synchronisées (LRCLIB).
+- Lecteur : file d'attente, aléatoire, répétition, égaliseur 10 bandes avec préréglages, spectre animé, paroles synchronisées (celles de vos fichiers d'abord, sinon LRCLIB).
+- Fiche du morceau : format, débit, vos écoutes, et des liens sur l'artiste (YouTube Music, Wikipedia, Grokipedia, Last.fm, Discogs).
+- Playlists : recherche, tri, doublons (la meilleure copie reste), remplacement des morceaux YouTube Music par vos fichiers.
+- Pochettes manquantes trouvées sur Deezer et iTunes, gardées dans l'application, jamais écrites dans vos fichiers.
+- Analyse en pause pour un partage réseau qui n'a pas changé.
 - YouTube Music : recherche avec suggestions, pages album et artiste, « Démarrer le mix », partage d'un lien YouTube vers l'application.
 - Radio : populaires, genres, pays, favoris, écoutées récemment.
 - Statistiques d'écoute : temps, séries, heures et jours, morceaux, artistes, albums et radios préférés.

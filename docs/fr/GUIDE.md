@@ -19,7 +19,11 @@ Le mini-lecteur au-dessus des onglets ouvre le lecteur complet.
   lancement. Le tirage reste le même tant que l'application tourne ; le bouton ⟳ en tire d'autres.
 - Vos playlists, les albums ajoutés récemment, vos radios favorites.
 - Un point sur l'engrenage signale qu'une nouvelle version attend dans Paramètres › Mises à jour.
-- **Paramètres › Page d'accueil** choisit lesquelles de ces sections l'Accueil affiche.
+- **Paramètres › Page d'accueil** choisit lesquelles de ces sections l'Accueil affiche. Quand il n'y
+  a rien à afficher, l'Accueil montre le logo de Chud Music.
+- Un appui long sur un morceau des **Écoutés récemment** › *Retirer des écoutés récemment*, ou
+  sur un album des **Ajoutés récemment** › *Retirer*, le retire de l'Accueil (avec Annuler). Ses
+  écoutes restent dans les statistiques et l'album reste dans la bibliothèque.
 
 ## Musique du téléphone
 
@@ -27,6 +31,11 @@ Le mini-lecteur au-dessus des onglets ouvre le lecteur complet.
   vocales…) pour le laisser hors de la bibliothèque. Rien n'est supprimé.
 - **Réanalyser** relit tout de suite le téléphone et les partages réseau.
 - « Retirer de la bibliothèque » masque un morceau ; il revient à la prochaine analyse.
+- **Trouver les pochettes manquantes** cherche la pochette des albums dont les fichiers n'en ont
+  pas, sur Deezer puis iTunes : seuls l'artiste et le titre de l'album sont envoyés, et seulement
+  quand vous appuyez. Les pochettes sont gardées dans le dossier de l'application, jamais écrites
+  dans vos fichiers. Sur la page d'un album, ⋮ › *Chercher la pochette en ligne* la cherche à
+  nouveau, et *Retirer la pochette trouvée en ligne* en retire une fausse.
 - L'analyse continue en arrière-plan, avec une autre application ouverte ou l'écran éteint : une
   notification montre où elle en est. Si Android l'arrête (application fermée, téléphone éteint),
   elle reprend d'elle-même là où elle s'était arrêtée, sans tout recommencer : ce qui était déjà
@@ -60,6 +69,9 @@ rien n'est lu ni écrit sur les serveurs. Vous pouvez aussi tout saisir à la ma
   ni supprimer. Seules les étiquettes (tags) et les pochettes sont lues pendant l'analyse.
 - **Analyse automatique** : relit les partages toutes les 6 heures, en Wi-Fi uniquement si
   l'option est cochée.
+- **Mettre l'analyse en pause** (ouvrez le partage dans les Paramètres) : quand vous savez que rien
+  n'y a changé, les analyses automatiques et **Réanalyser** le sautent. Ses morceaux restent dans
+  la bibliothèque ; enregistrer le partage le relit quand même.
 - Le téléphone doit être sur le même réseau que le serveur (ou via un VPN).
 
 ## YouTube Music
@@ -78,7 +90,7 @@ rien n'est lu ni écrit sur les serveurs. Vous pouvez aussi tout saisir à la ma
 - **Masquer un artiste** : ⋮ sur l'un de ses morceaux › *Masquer « … »*, ou l'œil barré sur sa
   page. Il n'apparaît plus dans les recherches, les mix, les pages d'artiste ni les playlists
   YouTube partagées. Vos playlists et votre bibliothèque ne sont pas touchées. **Paramètres ›
-  YouTube Music › Artistes masqués** le rétablit.
+  YouTube Music › Artistes masqués** ouvre leur liste, pour les rétablir.
 - **Paramètres › YouTube Music › Préférer le format Opus** : meilleure qualité ; à désactiver si
   un vieil appareil Bluetooth lit mal (AAC à la place).
 
@@ -95,6 +107,14 @@ rien n'est lu ni écrit sur les serveurs. Vous pouvez aussi tout saisir à la ma
   **Tout exporter** pour en garder une copie.
 - « Remplacer les titres YouTube par mes fichiers » remplace, quand c'est possible, les morceaux
   YouTube Music par le même morceau de votre bibliothèque.
+- 🔍 cherche dans la playlist (titre, artiste, album).
+- ⋮ › **Trier par…** titre, artiste, album ou durée : le nouvel ordre est enregistré dans la
+  playlist, et Annuler sur le message rétablit l'ancien.
+- ⋮ › **Trouver les doublons…** repère les morceaux présents plusieurs fois (le même fichier, ou
+  la même chanson du même artiste et de même durée) et, après confirmation, garde la meilleure
+  copie de chacun : FLAC plutôt que MP3, le meilleur débit, un fichier plutôt que sa version
+  YouTube Music. Les versions live et les remix sont d'autres chansons. Seule la playlist change,
+  jamais vos fichiers.
 - Les morceaux introuvables (fichier absent, partage éteint) restent dans la playlist, grisés.
 - Import et export : voir [Échanger les playlists avec le PC](ECHANGE-PC.md).
 
@@ -110,8 +130,13 @@ cherchées aussi.
 - Aléatoire, répétition (tout / un), file d'attente modifiable.
 - **Égaliseur** : 10 bandes, préamplification, préréglages, et vos propres réglages ; appliqué
   à tout ce qui est lu.
-- **Paroles** : synchronisées quand LRCLIB les a, sinon simples. « Rechercher autrement » permet
-  de corriger le titre ou l'artiste.
+- **Paroles** : d'abord celles du fichier, quand ses tags en contiennent (MP3, FLAC, Ogg, Opus,
+  M4A ; synchronisées si elles portent des temps LRC) ; sinon celles de LRCLIB, synchronisées
+  quand il les a. « Rechercher autrement » permet de corriger le titre ou l'artiste (et interroge
+  LRCLIB).
+- **Fiche du morceau** (⋮ sur n'importe quel morceau) : album, année, format et débit,
+  emplacement du fichier, nombre d'écoutes, première et dernière fois, et des liens pour en
+  savoir plus sur l'artiste : sa page YouTube Music, Wikipedia, Grokipedia, Last.fm et Discogs.
 - Les commandes sont aussi dans la notification, sur l'écran verrouillé, sur un casque ou une
   voiture Bluetooth. **Paramètres › Lecture** indique si les notifications de l'application sont
   autorisées ; si les commandes manquent sur l'écran verrouillé, vérifiez dans les réglages du

@@ -44,12 +44,19 @@ Chud Music never modifies, moves or deletes a music file, on the phone or on a s
 - **Find your shares in two taps**: *Search the network* lists the PCs and NAS on your Wi-Fi and the
   folders they share; pick one and it is in your library.
 - **Home** with what you played recently, a **Random** shelf you can redraw, your playlists and
-  recent additions; each shelf can be hidden.
+  recent additions; each shelf can be hidden, and a track or an album can be taken off it.
 - **Hide a YouTube Music artist** you never want to hear: gone from searches, mixes and artist
   pages, and restorable from Settings.
 - **Library scan in the background**, resumed where it stopped if Android interrupts it.
 - **Player** with queue, shuffle, repeat, playback speed, a **10-band equalizer** with presets, a
-  live spectrum and **synced lyrics** (from [LRCLIB](https://lrclib.net)).
+  live spectrum and **synced lyrics**: the ones in your files first, otherwise from
+  [LRCLIB](https://lrclib.net).
+- **Track card**: format, bit rate, your plays, and links about the artist (YouTube Music,
+  Wikipedia, Grokipedia, Last.fm, Discogs).
+- **Playlist tools**: search inside a playlist, sort it, find duplicates (the best copy stays),
+  swap YouTube Music tracks for your own files.
+- **Find missing covers** on Deezer and iTunes, kept in the app, never written into your files.
+- **Pause scanning** of a network share you know did not change.
 - **Playlists shared with [Chud Music for PC](https://github.com/BigFatDeuce/Chud-Music)**, both ways (JSON, M3U, M3U8). Tracks are found again
   on the other device even when their paths differ.
 - **Listening statistics**: time, streaks, favourite tracks, artists, albums and stations. They
@@ -79,7 +86,8 @@ Android 8.0 or newer. The APK is signed; its SHA-256 is in `SHA256SUMS.txt` next
 ## Privacy
 
 No account, no analytics, no advertising identifier. The app talks to the servers you add, to
-YouTube Music when you use it, to Radio Browser and LRCLIB for stations and lyrics, and to GitHub
+YouTube Music when you use it, to Radio Browser and LRCLIB for stations and lyrics, to Deezer and
+iTunes only when you ask for missing covers (the album's artist and title), and to GitHub
 once a day to look for a new version (this can be switched off). Share passwords are encrypted
 with a key that never leaves the phone.
 

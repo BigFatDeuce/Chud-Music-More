@@ -50,7 +50,9 @@ ceremony.
 | Connection test and folder browser | `Idle` `Testing(shown)` `Ok(path, dirs)` `Failed` | `Probe` in `ui/settings/NetSourceScreen.kt` | `theFolderBrowserStaysOnScreenWhileAFolderOpens` |
 | Access to the phone's music | `GRANTED` `ASKABLE` `BLOCKED` | `AudioAccess`, `AudioPermission.next()` in `ui/Permissions.kt` | `audioAccessTellsAnAnswerFromASilentRefusal` |
 | Lyrics of the current track | `null` (searching) `Synced` `Plain` `Instrumental` `NotFound` `Error` | `Lyrics.Result` in `lyrics/Lyrics.kt` | `LyricsTest` |
-| Track menu context | `None` `InPlaylist` `InQueue` | `MenuContext` in `ui/Ui.kt` | — |
+| Track menu context | `None` `InPlaylist` `InQueue` `RecentPlayed` | `MenuContext` in `ui/Ui.kt` | — |
+| Online cover search | `Idle` `Running(done, total)` `Done(found, searched)` `Failed(message)` | `OnlineCovers.State` in `library/OnlineCovers.kt`, `OnlineCovers.pick()` | `Features033Test`: `onlineCoverIsTheSameAlbumOrNone`; on the emulator |
+| Paused network place | skipped by automatic and "Rescan" scans, read when saved | `Scanner.mustScan(paused, chosen)`, `Settings.scanPaused` | `LinksTest`: `networkScanRules` |
 | Things handed over by other apps | `PlaylistFile` `SharedText` | `Incoming.Item` in `ui/Incoming.kt` | `SmallLogicTest` (link parsing) |
 
 All tests: `./gradlew testDebugUnitTest` (`StateMachinesTest` unless another class is named).

@@ -2,13 +2,13 @@
 
 *[Version française](fr/TESTS.md)*
 
-State on 16 November 2026, version 0.3.2. Everything below was done on the **Android 16
+State on 18 November 2026, version 0.3.3. Everything below was done on the **Android 16
 emulator (API 36)**, with the debug build and with the signed, minified release build. The
 author's test servers were Samba and rclone (WebDAV) running in WSL.
 
 ## Checked automatically
 
-`./gradlew testDebugUnitTest`: 60 unit tests, of which 10 only run on request (6 against the
+`./gradlew testDebugUnitTest`: 69 unit tests, of which 10 only run on request (6 against the
 Internet services, 4 against an SMB server). All pass.
 
 - Playlist exchange with the PC app (JSON and M3U8, both ways, path matching).
@@ -73,6 +73,23 @@ Internet services, 4 against an SMB server). All pass.
 - Equalizer, synced lyrics, shuffle, repeat, queue, queue restored after the app is stopped.
 - Statistics: every section; copies of the same track are counted together.
 
+**Added in 0.3.3** (18 November, French and English, debug build; lyrics, track card and covers
+also in the release build)
+- Playlist: 🔍 keeps only the matching tracks; *Sort by… › Title* reorders and saves, with Undo;
+  *Find duplicates…* on an MP3 and a FLAC of the same song added three times removed two entries
+  and kept the FLAC (seen on its track card).
+- Home: *Remove from Recently played* (long press) and *Remove* on a Recently added album take
+  them off. Undo on that message was not tapped in time on the slow emulator.
+- *Find missing covers*: Daft Punk's *Discovery* got its cover, the 11 made-up test albums none;
+  ⋮ › *Remove the cover found online*, then *Find the cover online* on the album page; the cover
+  stayed after its files were touched and the phone rescanned.
+- Lyrics from the file: MP3 with USLT (UTF-16), MP3 written by ffmpeg (TXXX), FLAC with synced
+  LRC lyrics; on the phone and on a WebDAV share.
+- Track card: album, format and bit rate, source, path, plays; the Wikipedia link opens the
+  browser.
+- Pause scanning on a WebDAV share: a file added on the server was not read by *Rescan* while
+  paused, and was once the pause was taken off.
+
 **Permissions and updates**
 - Music permission: refused once (asked again), refused twice (the card offers Android's
   settings), allowed in the settings (seen when coming back, scan starts).
@@ -90,6 +107,8 @@ Internet services, 4 against an SMB server). All pass.
   themselves** (mDNS, which is how WebDAV servers are found) cannot be seen from the emulator.
   Only the address sweep was exercised.
 - Playback resuming after the phone **restarts**.
+- Lyrics in **Ogg/Opus** and **M4A** files (unit tests only), the online cover search on a large
+  real library, the Grokipedia, Last.fm and Discogs links (only Wikipedia was opened).
 - Importing, in the **PC app** itself, the files exported by the phone.
 
 ## Known limits

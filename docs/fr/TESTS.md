@@ -2,13 +2,13 @@
 
 *[English version](../TESTING.md)*
 
-État au 16 novembre 2026, version 0.3.2. Tout ce qui suit a été fait sur l'**émulateur Android 16
+État au 18 novembre 2026, version 0.3.3. Tout ce qui suit a été fait sur l'**émulateur Android 16
 (API 36)**, en version debug puis en version release signée et optimisée. Les serveurs de test
 étaient Samba et rclone (WebDAV) dans WSL.
 
 ## Vérifié automatiquement
 
-`./gradlew testDebugUnitTest` : 60 tests unitaires, dont 10 ne tournent que sur demande (6 contre
+`./gradlew testDebugUnitTest` : 69 tests unitaires, dont 10 ne tournent que sur demande (6 contre
 les services Internet, 4 contre un serveur SMB). Tous passent.
 
 - Échange de playlists avec le PC (JSON et M3U8, dans les deux sens, correspondance des chemins).
@@ -76,6 +76,24 @@ les services Internet, 4 contre un serveur SMB). Tous passent.
   l'arrêt de l'application.
 - Statistiques : toutes les sections ; les copies d'un même morceau sont regroupées.
 
+**Ajouté en 0.3.3** (18 novembre, français et anglais, version debug ; paroles, fiche du morceau
+et pochettes aussi en version release)
+- Playlist : 🔍 ne garde que les morceaux qui correspondent ; *Trier par… › Titre* réordonne et
+  enregistre, avec Annuler ; *Trouver les doublons…* sur un MP3 et un FLAC de la même chanson
+  ajoutés trois fois a retiré deux entrées et gardé le FLAC (vu sur sa fiche).
+- Accueil : *Retirer des écoutés récemment* (appui long) et *Retirer* sur un album des ajoutés
+  récemment les retirent. Annuler sur ce message n'a pas pu être touché à temps sur l'émulateur.
+- *Trouver les pochettes manquantes* : *Discovery* de Daft Punk a reçu sa pochette, les 11 albums
+  de test inventés aucune ; ⋮ › *Retirer la pochette trouvée en ligne*, puis *Chercher la
+  pochette en ligne* sur la page de l'album ; la pochette est restée après modification des
+  fichiers et nouvelle analyse.
+- Paroles du fichier : MP3 avec USLT (UTF-16), MP3 écrit par ffmpeg (TXXX), FLAC avec paroles LRC
+  synchronisées ; sur le téléphone et sur un partage WebDAV.
+- Fiche du morceau : album, format et débit, source, chemin, écoutes ; le lien Wikipedia ouvre le
+  navigateur.
+- Analyse en pause sur un partage WebDAV : un fichier ajouté sur le serveur n'a pas été lu par
+  *Réanalyser* pendant la pause, et l'a été une fois la pause retirée.
+
 **Autorisations et mises à jour**
 - Autorisation « musique » : refusée une fois (redemandée), refusée deux fois (la carte propose
   les réglages d'Android), accordée dans les réglages (vue au retour, l'analyse démarre).
@@ -94,6 +112,9 @@ les services Internet, 4 contre un serveur SMB). Tous passent.
   **s'annoncent** (mDNS, c'est ainsi que les serveurs WebDAV sont trouvés) ne sont pas visibles
   depuis l'émulateur. Seul le balayage des adresses a été exercé.
 - La reprise de la lecture après un **redémarrage** du téléphone.
+- Les paroles dans les fichiers **Ogg/Opus** et **M4A** (tests unitaires seulement), la recherche
+  de pochettes sur une vraie grande bibliothèque, les liens Grokipedia, Last.fm et Discogs (seul
+  Wikipedia a été ouvert).
 - L'import, dans l'**application PC** elle-même, des fichiers exportés par le téléphone.
 
 ## Limites connues

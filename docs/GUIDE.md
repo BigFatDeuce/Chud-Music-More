@@ -19,7 +19,11 @@ mini player above them opens the full player.
   draw stays the same while the app runs; the ⟳ button draws others.
 - Your playlists, recently added albums, favourite stations.
 - A dot on the gear means a new version is waiting in Settings › Updates.
-- **Settings › Home page** chooses which of these shelves Home shows.
+- **Settings › Home page** chooses which of these shelves Home shows. With nothing to show, Home
+  shows the Chud Music logo.
+- A long press on a track of **Recently played** › *Remove from Recently played*, or on an album
+  of **Recently added** › *Remove*, takes it off Home (with Undo). Its plays stay in the
+  statistics and the album stays in the library.
 
 ## Music on the phone
 
@@ -31,6 +35,10 @@ mini player above them opens the full player.
   shows its progress. If Android stops it (app closed, phone switched off), it goes on by itself
   where it stopped, without starting over: what was already read is kept. The same goes for
   network shares.
+- **Find missing covers** looks for the covers of the albums whose files hold none, on Deezer then
+  iTunes: only the album's artist and title are sent, and only when you tap it. Covers are kept
+  in the app's folder, never written into your files. On an album's page, ⋮ › *Find the cover
+  online* searches that album again, and *Remove the cover found online* takes a wrong one away.
 - If access to the music was refused twice, Android stops asking: Home then offers **Open
   settings**, where you allow "Music and audio".
 
@@ -61,6 +69,8 @@ in the Server field fills in the rest.
 - Files stay on the server: Chud Music streams them and never modifies or deletes anything. Only
   tags and covers are read during the scan.
 - **Automatic scan**: shares are read again every 6 hours, on Wi-Fi only if that option is on.
+- **Pause scanning** (open the share in Settings): when you know nothing changed on it, automatic
+  scans and **Rescan** skip it. Its tracks stay in the library; saving the share reads it anyway.
 - The phone must be on the same network as the server (or reach it through a VPN).
 
 ## YouTube Music
@@ -78,7 +88,7 @@ in the Server field fills in the rest.
 - No Google account, no ads. YouTube Music tracks go into playlists like any other.
 - **Hide an artist**: ⋮ on one of their songs › *Hide “…”*, or the crossed-out eye on their page.
   They no longer appear in searches, mixes, artist pages or shared YouTube playlists. Your own
-  playlists and library are not touched. **Settings › YouTube Music › Hidden artists** restores them.
+  playlists and library are not touched. **Settings › YouTube Music › Hidden artists** opens their list, to restore them.
 - **Settings › YouTube Music › Prefer Opus**: best quality; switch it off if an old Bluetooth
   device plays badly (AAC is used instead).
 
@@ -91,6 +101,13 @@ in the Server field fills in the rest.
   and delete are in the playlist's menu (your files are not touched).
 - **Delete all playlists** (the red bin at the top of Playlists) asks twice before deleting
   every playlist; it cannot be undone, so use **Export all** first to keep a copy.
+- 🔍 searches inside the playlist (title, artist, album).
+- ⋮ › **Sort by…** title, artist, album or duration: the new order is saved in the playlist, and
+  Undo on the message brings the old one back.
+- ⋮ › **Find duplicates…** lists the tracks that are there more than once (the same file, or the
+  same song by the same artist with the same length) and, after asking, keeps the best copy of
+  each: FLAC rather than MP3, the higher bit rate, a file rather than its YouTube Music twin.
+  Live versions and remixes are other songs. Only the playlist changes, never your files.
 - Tracks that cannot be found (file gone, share off) stay in the playlist, greyed.
 - "Replace YouTube tracks with my files" swaps, where possible, YouTube Music tracks for the same
   track in your library.
@@ -107,8 +124,12 @@ looked up too.
 
 - Shuffle, repeat (all / one), editable queue, playback speed.
 - **Equalizer**: 10 bands, pre-amp, presets and your own; applied to everything that plays.
-- **Lyrics**: synced when LRCLIB has them, plain otherwise. "Search differently" lets you correct
-  the title or the artist.
+- **Lyrics**: the file's own lyrics first, when its tags hold some (MP3, FLAC, Ogg, Opus, M4A;
+  synced if they carry LRC times); otherwise from LRCLIB, synced when it has them. "Search
+  differently" lets you correct the title or the artist (and asks LRCLIB).
+- **Track card** (⋮ on any track): album, year, format and bit rate, where the file is, how many
+  times you played it, when first and last, and links to learn more about the artist: its
+  YouTube Music page, Wikipedia, Grokipedia, Last.fm and Discogs.
 - Controls are also in the notification, on the lock screen, on Bluetooth headsets and cars.
   **Settings › Playback** says whether the app's notifications are on; if the controls are
   missing from the lock screen, check in the phone's settings that the lock screen shows
