@@ -15,7 +15,9 @@ Le mini-lecteur au-dessus des onglets ouvre le lecteur complet.
 
 ## Accueil
 
-- **Écoutés récemment**, puis **Au hasard** : 18 morceaux de votre bibliothèque tirés au sort au
+- **Écoutés récemment** garde les 10 derniers titres ; le plus ancien s'en va tout seul. **Tout
+  effacer** la vide, avec Annuler ; vos statistiques sont conservées.
+- **Au hasard** : 18 morceaux de votre bibliothèque tirés au sort au
   lancement. Le tirage reste le même tant que l'application tourne ; le bouton ⟳ en tire d'autres.
 - Vos playlists, les albums ajoutés récemment, vos radios favorites.
 - Un point sur l'engrenage signale qu'une nouvelle version attend dans Paramètres › Mises à jour.
@@ -73,6 +75,11 @@ rien n'est lu ni écrit sur les serveurs. Vous pouvez aussi tout saisir à la ma
   n'y a changé, les analyses automatiques et **Réanalyser** le sautent. Ses morceaux restent dans
   la bibliothèque ; enregistrer le partage le relit quand même.
 - Le téléphone doit être sur le même réseau que le serveur (ou via un VPN).
+- Vous pouvez ajouter **autant de partages que vous voulez**, SMB et WebDAV : ils sont analysés côte
+  à côte, et celui qui ne répond pas ne retarde pas les autres.
+- Une connexion perdue pendant l'analyse ne fait que la suspendre : elle repart d'elle-même. Les
+  fichiers déjà lus ne sont pas relus, sauf s'ils ont changé.
+- Quand un partage ne marche pas, sa ligne dans les Paramètres dit pourquoi et que faire.
 
 ## YouTube Music
 
@@ -102,6 +109,9 @@ rien n'est lu ni écrit sur les serveurs. Vous pouvez aussi tout saisir à la ma
   ajoutés.
 - Dans une playlist : la poignée ≡ réordonne, ⋮ › « Retirer de la playlist » enlève un morceau ;
   la playlist se renomme et se supprime depuis son menu (vos fichiers ne sont pas touchés).
+- **Changer l'image** : un appui long sur une playlist (ou son ⋮), ou sur sa pochette une fois
+  ouverte › *Changer l'image…*. L'image est copiée dans le dossier de l'application ; le même menu
+  rétablit les pochettes des morceaux.
 - **Supprimer toutes les playlists** (la corbeille rouge en haut de Playlists) demande deux
   confirmations avant de tout supprimer ; c'est irréversible, alors utilisez d'abord
   **Tout exporter** pour en garder une copie.
@@ -118,6 +128,26 @@ rien n'est lu ni écrit sur les serveurs. Vous pouvez aussi tout saisir à la ma
 - Les morceaux introuvables (fichier absent, partage éteint) restent dans la playlist, grisés.
 - Import et export : voir [Échanger les playlists avec le PC](ECHANGE-PC.md).
 
+### Playlists intelligentes
+
+**Playlists › Playlists intelligentes** contient des playlists qui se remplissent selon des règles et
+suivent la bibliothèque sans rien faire. Quatre sont fournies : *Ajouts récents* (les 30 derniers
+jours), *Jamais écoutés*, *Les plus écoutés* et *Redécouverte* (pas écoutés depuis 6 mois). Toutes se
+modifient et se suppriment.
+
+**Nouvelle playlist intelligente** part de l'une d'elles ou de rien :
+
+- **Règles** sur le genre, l'artiste, l'album, le titre, le dossier, l'année, le nombre d'écoutes, la
+  date d'ajout, la dernière écoute ou la durée. S'il y en a plusieurs, choisissez si un morceau doit
+  les suivre toutes ou une seule.
+- **Exclusions** : ce qui doit rester dehors, avec les mêmes règles. Sur un morceau, ⋮ › *Exclure de
+  cette playlist* écarte celui-là (avec Annuler).
+- **Ordre** et **nombre maximal de titres**. Sans maximum, une liste s'arrête à 10 000.
+
+Le nombre de morceaux s'affiche pendant la modification. ⋮ permet aussi de changer l'image ou
+d'enregistrer les morceaux du moment comme playlist normale. Les règles ne portent que sur votre
+bibliothèque, pas sur YouTube Music.
+
 ## Radio
 
 Populaires, genres, pays, recherche dans le monde entier. L'étoile ajoute une radio aux
@@ -127,7 +157,22 @@ cherchées aussi.
 
 ## Lecteur
 
-- Aléatoire, répétition (tout / un), file d'attente modifiable.
+- Aléatoire, répétition (tout / un), vitesse de lecture.
+- **File d'attente** : la poignée ≡ réordonne. Son menu ⋮ sélectionne plusieurs morceaux à retirer,
+  retire ceux déjà passés, vide la file (en gardant ou non le morceau en cours) et l'enregistre comme
+  playlist. Une liste de plus de 2 000 morceaux se lit par tranches de 2 000.
+- **Reprise** : le dernier morceau, sa position et la file reviennent après la fermeture de
+  l'application ou le redémarrage du téléphone, en pause.
+- **Sans blanc** : les morceaux d'un album s'enchaînent sans interruption, toujours.
+- **Fondu enchaîné** (Paramètres › Lecture) : désactivé, ou de 1 à 12 secondes. Pas dans un album,
+  sauf si vous le demandez, ni à la radio, ni quand vous changez vous-même de morceau.
+- **Normaliser le volume (ReplayGain)** : désactivé, par morceau ou par album. Utilise les tags
+  ReplayGain ou R128 des fichiers ; sans tag, un morceau est mesuré à sa première écoute complète et
+  le résultat sert ensuite. Vos fichiers ne sont jamais modifiés.
+- **Minuterie d'endormissement** (la lune) : après un nombre de minutes (le son baisse sur les 10
+  dernières secondes), à la fin du morceau, ou à la fin de l'album.
+- **Connexion perdue** : sur un partage, YouTube Music ou la radio, le lecteur attend (`WAIT` sur
+  l'afficheur) et reprend où il en était au retour du réseau.
 - **Égaliseur** : 10 bandes, préamplification, préréglages, et vos propres réglages ; appliqué
   à tout ce qui est lu.
 - **Paroles** : d'abord celles du fichier, quand ses tags en contiennent (MP3, FLAC, Ogg, Opus,
@@ -141,6 +186,14 @@ cherchées aussi.
   voiture Bluetooth. **Paramètres › Lecture** indique si les notifications de l'application sont
   autorisées ; si les commandes manquent sur l'écran verrouillé, vérifiez dans les réglages du
   téléphone que l'écran de verrouillage affiche les notifications et le contenu multimédia.
+
+## Réglages partagés avec le PC
+
+**Paramètres › Synchronisation avec Chud Music pour PC** exporte dans un fichier, et importe,
+l'égaliseur et ses préréglages, le fondu, la normalisation, les artistes masqués et les radios
+favorites. Jamais de mot de passe ni d'adresse de serveur. L'application PC ne lit pas encore ce
+fichier ; son format est décrit dans [EXCHANGE.md](../EXCHANGE.md) (en anglais). Les playlists ont
+leur propre export.
 
 ## Statistiques
 

@@ -2,13 +2,13 @@
 
 *[English version](../TESTING.md)*
 
-État au 18 novembre 2026, version 0.3.3. Tout ce qui suit a été fait sur l'**émulateur Android 16
-(API 36)**, en version debug puis en version release signée et optimisée. Les serveurs de test
+État au 22 novembre 2026, version 0.4.0. Tout ce qui suit a été fait sur l'**émulateur Android 16
+(API 36)**, avec la version debug ; ce qui a aussi été vu en version release le précise. Les serveurs de test
 étaient Samba et rclone (WebDAV) dans WSL.
 
 ## Vérifié automatiquement
 
-`./gradlew testDebugUnitTest` : 69 tests unitaires, dont 10 ne tournent que sur demande (6 contre
+`./gradlew testDebugUnitTest` : 103 tests unitaires, dont 10 ne tournent que sur demande (6 contre
 les services Internet, 4 contre un serveur SMB). Tous passent.
 
 - Échange de playlists avec le PC (JSON et M3U8, dans les deux sens, correspondance des chemins).
@@ -76,17 +76,55 @@ les services Internet, 4 contre un serveur SMB). Tous passent.
   l'arrêt de l'application.
 - Statistiques : toutes les sections ; les copies d'un même morceau sont regroupées.
 
-**Ajouté en 0.3.3** (18 novembre, français et anglais, version debug ; paroles, fiche du morceau
-et pochettes aussi en version release)
+**Ajouté en 0.4.0** (22 novembre ; version debug, en français, les écrans principaux vus aussi en
+anglais ; la version release comme indiqué à la fin)
+- Image d'une playlist : appui long dans la liste et sur la pochette d'une playlist ouverte, choix
+  d'une photo, retour à l'image automatique.
+- Écoutés récemment : reste à 10, *Tout effacer* avec sa question, Annuler.
+- Sans blanc : trois FLAC découpés dans un même son, sortie enregistrée : 1 984 500 échantillons, pas
+  un de plus ni de moins. De même avec le fondu activé (album gardé sans blanc).
+- Fondu de 6 s de 44,1 à 48 kHz : puissance constante, pas de clic.
+- ReplayGain : un fichier mesuré à -15,64 LUFS (ffmpeg : -15,6) ; un fichier fort et un fichier avec
+  tags lus au niveau attendu.
+- Minuterie : fin du morceau, fin de l'album (suivi d'un autre album), 1 minute.
+- File : glisser, plusieurs retirés d'un coup, vidée des deux façons, enregistrée comme playlist.
+- Reprise : après un arrêt forcé, et après un plantage de l'émulateur lui-même pendant la lecture :
+  même morceau, même file, même position (8 s).
+- Playlists intelligentes : les quatre fournies, règles, une exclusion, un maximum, un morceau exclu
+  puis Annuler, enregistrée comme playlist normale, supprimée ; un morceau lu quitte *Jamais écoutés*
+  tout seul.
+- Fichier de playlists exporté puis réimporté avec une image et des playlists intelligentes ; fichier
+  de réglages exporté, modifié à la main, importé.
+- Deux partages WebDAV analysés côte à côte. Réseau coupé pendant la lecture : le lecteur a attendu et
+  repris au même endroit. Réseau coupé trois fois pendant l'analyse de 1 000 fichiers : elle est
+  allée au bout, tous les tags lus.
+- 102 000 morceaux dans la bibliothèque (dont 100 000 lignes inventées) : listes, recherche, albums,
+  artistes, tout en aléatoire, une playlist intelligente de 10 000. Mémoire Java 26 à 66 Mo, aucun
+  blocage.
+- Dix minutes de lecture, 277 morceaux d'un partage, écran éteint, veille forcée, mode avion 40 s,
+  Wi-Fi coupé 20 s : ni plantage, ni blocage, ni morceau sauté à cause du réseau.
+- **Version release** (français), installée par-dessus la 0.3.3 : base mise à niveau avec morceaux,
+  historique et file conservés, les quatre playlists intelligentes présentes, fichiers de playlists et de
+  réglages importés, une playlist intelligente modifiée, fondu vu à l'enchaînement, file et position
+  retrouvées après un arrêt forcé.
+- Défauts trouvés ainsi et corrigés : une longue file bloquait l'application au démarrage ; un morceau
+  pouvait être enregistré sans ses tags si le réseau tombait ; la minuterie dépassait un morceau
+  illisible, et une erreur en pause relançait la musique ; l'égaliseur faisait un clic entre deux morceaux d'un album.
+
+**Ajouté en 0.3.3** (18 novembre, version debug). *Ce paragraphe affirmait d'abord plus que ce qui
+avait été fait : que tout avait été vu en français, en anglais et en version release. Vu en anglais :
+le menu de playlist, le message « aucun doublon », la fiche du morceau, les lignes pochettes et
+partage des Paramètres. Vu en release (français) : les paroles de deux fichiers, la fiche du morceau,
+la recherche de pochettes. Le reste n'a été vu qu'en français, en version debug.*
 - Playlist : 🔍 ne garde que les morceaux qui correspondent ; *Trier par… › Titre* réordonne et
   enregistre, avec Annuler ; *Trouver les doublons…* sur un MP3 et un FLAC de la même chanson
   ajoutés trois fois a retiré deux entrées et gardé le FLAC (vu sur sa fiche).
 - Accueil : *Retirer des écoutés récemment* (appui long) et *Retirer* sur un album des ajoutés
-  récemment les retirent. Annuler sur ce message n'a pas pu être touché à temps sur l'émulateur.
+  récemment les retirent. Annuler sur ce message n'a pas été touché.
 - *Trouver les pochettes manquantes* : *Discovery* de Daft Punk a reçu sa pochette, les 11 albums
   de test inventés aucune ; ⋮ › *Retirer la pochette trouvée en ligne*, puis *Chercher la
-  pochette en ligne* sur la page de l'album ; la pochette est restée après modification des
-  fichiers et nouvelle analyse.
+  pochette en ligne* sur la page de l'album. La pochette était encore là après une nouvelle analyse,
+  ce qui ne prouvait pas que les fichiers avaient été relus.
 - Paroles du fichier : MP3 avec USLT (UTF-16), MP3 écrit par ffmpeg (TXXX), FLAC avec paroles LRC
   synchronisées ; sur le téléphone et sur un partage WebDAV.
 - Fiche du morceau : album, format et débit, source, chemin, écoutes ; le lien Wikipedia ouvre le
@@ -111,7 +149,13 @@ et pochettes aussi en version release)
 - La recherche réseau sur un vrai Wi-Fi : les **noms des serveurs** (NetBIOS) et les serveurs qui
   **s'annoncent** (mDNS, c'est ainsi que les serveurs WebDAV sont trouvés) ne sont pas visibles
   depuis l'émulateur. Seul le balayage des adresses a été exercé.
-- La reprise de la lecture après un **redémarrage** du téléphone.
+- Des **heures** de lecture d'affilée, sur un vrai téléphone : l'essai long a duré dix minutes.
+- Un redémarrage demandé à Android (l'émulateur a planté à la place : une coupure de courant, en somme).
+- Deux partages **SMB** en même temps, SMB et WebDAV ensemble (deux partages WebDAV l'ont été).
+- Une vraie bibliothèque de 100 000 **fichiers** : les lignes étaient inventées, sans fichiers.
+- L'ordre aléatoire après un redémarrage, l'attente du réseau sur YouTube Music et à la radio (sur un
+  partage WebDAV seulement).
+- Le fichier de réglages dans l'**application PC**, qui ne le lit pas encore.
 - Les paroles dans les fichiers **Ogg/Opus** et **M4A** (tests unitaires seulement), la recherche
   de pochettes sur une vraie grande bibliothèque, les liens Grokipedia, Last.fm et Discogs (seul
   Wikipedia a été ouvert).

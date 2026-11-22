@@ -2,17 +2,21 @@
 
 *[Version française](fr/TESTS.md)*
 
-State on 18 November 2026, version 0.3.3. Everything below was done on the **Android 16
-emulator (API 36)**, with the debug build and with the signed, minified release build. The
+State on 22 November 2026, version 0.4.0. Everything below was done on the **Android 16
+emulator (API 36)**, with the debug build; what was also seen in the release build says so. The
 author's test servers were Samba and rclone (WebDAV) running in WSL.
 
 ## Checked automatically
 
-`./gradlew testDebugUnitTest`: 69 unit tests, of which 10 only run on request (6 against the
+`./gradlew testDebugUnitTest`: 103 unit tests, of which 10 only run on request (6 against the
 Internet services, 4 against an SMB server). All pass.
 
 - Playlist exchange with the PC app (JSON and M3U8, both ways, path matching).
 - Equalizer maths, synced lyrics parsing, version order.
+- Audio: crossfade, gapless across track boundaries, resampler, ReplayGain, loudness, equalizer
+  continuity, sleep timer (`AudioTest`).
+- Smart playlists on a real SQLite with 100,000 tracks (each query under 120 ms on the author's PC),
+  queue kept for the next start, playback errors, both exchange files (`Features040Test`).
 - The state machines listed in [STATE-MACHINES.md](STATE-MACHINES.md): player phase, playback
   errors, scan, YouTube search paging, network search, permission, random draw, release notes,
   pasted links, scan resumed after a stop.
@@ -73,16 +77,51 @@ Internet services, 4 against an SMB server). All pass.
 - Equalizer, synced lyrics, shuffle, repeat, queue, queue restored after the app is stopped.
 - Statistics: every section; copies of the same track are counted together.
 
-**Added in 0.3.3** (18 November, French and English, debug build; lyrics, track card and covers
-also in the release build)
+**Added in 0.4.0** (22 November; debug build, French, with the main screens also seen in English;
+the release build as stated at the end)
+- Playlist picture: long press in the list and on the cover of an opened playlist, photo picker,
+  back to the automatic picture.
+- Recently played: stays at 10, *Clear all* with its question, Undo.
+- Gapless: three FLAC files cut from one sound, the output recorded: 1,984,500 samples, not one added
+  or missing. Same with the crossfade on (album kept gapless).
+- Crossfade of 6 s from 44.1 to 48 kHz: equal power, no click.
+- ReplayGain: a file measured at -15.64 LUFS (ffmpeg: -15.6); a loud and a tagged file played at the
+  expected level.
+- Sleep timer: end of track, end of album (followed by another album), 1 minute.
+- Queue: drag, several removed at once, emptied both ways, saved as a playlist.
+- Resume: after a forced stop, and after the emulator itself crashed while a track played: same
+  track, queue and position (8 s).
+- Smart playlists: the four that come with the app, rules, an exclusion, a maximum, a track excluded
+  then Undo, saved as an ordinary playlist, deleted; a track played leaves *Never played* by itself.
+- Playlist file exported and imported again with a picture and smart playlists; settings file
+  exported, changed by hand, imported.
+- Two WebDAV shares scanned side by side. Network cut while a track played from one: the player
+  waited and went on from the same place. Network cut three times during a scan of 1,000 files: it
+  went on to the end with every tag read.
+- 102,000 tracks in the library (100,000 of them made-up rows): lists, search, albums, artists,
+  shuffle of everything, a smart playlist of 10,000. Java memory 26 to 66 MB, no freeze.
+- Ten minutes of playback, 277 tracks from a share, with the screen off, Doze forced, airplane mode
+  40 s, Wi-Fi off 20 s: no crash, no freeze, no track skipped for the network.
+- **Release build** (French), installed over 0.3.3: database upgraded with tracks, history and queue kept,
+  the four smart playlists there, playlist and settings files imported, a smart playlist edited, crossfade
+  seen on the timeline, queue and position back after a forced stop.
+- Faults found this way and fixed: a long queue froze the app at start-up; a track could be stored
+  without its tags when the network dropped; the sleep timer went past a track that could not be
+  played, and an error while paused started the music again; the equalizer clicked between two tracks of an album.
+
+**Added in 0.3.3** (18 November, debug build). *This paragraph first claimed more than was done: it
+said everything had been seen in French, English and the release build. Seen in English: the playlist
+menu, the "no duplicates" message, the track card, the covers and share rows of Settings. Seen in the
+release build (French): lyrics of two files, the track card, the cover search. The rest was seen in
+French in the debug build only.*
 - Playlist: 🔍 keeps only the matching tracks; *Sort by… › Title* reorders and saves, with Undo;
   *Find duplicates…* on an MP3 and a FLAC of the same song added three times removed two entries
   and kept the FLAC (seen on its track card).
 - Home: *Remove from Recently played* (long press) and *Remove* on a Recently added album take
-  them off. Undo on that message was not tapped in time on the slow emulator.
+  them off. Undo on that message was not tapped.
 - *Find missing covers*: Daft Punk's *Discovery* got its cover, the 11 made-up test albums none;
-  ⋮ › *Remove the cover found online*, then *Find the cover online* on the album page; the cover
-  stayed after its files were touched and the phone rescanned.
+  ⋮ › *Remove the cover found online*, then *Find the cover online* on the album page. The cover was
+  still there after a rescan, which did not prove that the files had been read again.
 - Lyrics from the file: MP3 with USLT (UTF-16), MP3 written by ffmpeg (TXXX), FLAC with synced
   LRC lyrics; on the phone and on a WebDAV share.
 - Track card: album, format and bit rate, source, path, plays; the Wikipedia link opens the
@@ -106,7 +145,13 @@ also in the release build)
 - Network search on a real Wi-Fi: **server names** (NetBIOS) and servers that **announce
   themselves** (mDNS, which is how WebDAV servers are found) cannot be seen from the emulator.
   Only the address sweep was exercised.
-- Playback resuming after the phone **restarts**.
+- **Hours** of playback in a row, on a real phone: the long test lasted ten minutes.
+- A reboot asked of Android (the emulator crashed instead: a power cut, in effect).
+- Two **SMB** shares at the same time, SMB and WebDAV together (two WebDAV shares were).
+- A real library of 100,000 **files**: the rows were made up, the files did not exist.
+- The shuffle order after a restart, the waiting state on YouTube Music and on the radio (on a WebDAV
+  share only).
+- The settings file in the **PC app**, which does not read it yet.
 - Lyrics in **Ogg/Opus** and **M4A** files (unit tests only), the online cover search on a large
   real library, the Grokipedia, Last.fm and Discogs links (only Wikipedia was opened).
 - Importing, in the **PC app** itself, the files exported by the phone.

@@ -34,10 +34,10 @@ ceremony.
 
 | Machine | States | Type and transitions | Tested by |
 |---|---|---|---|
-| Player phase | `DISCONNECTED` `EMPTY` `LOADING` `PLAYING` `PAUSED` `ENDED` `FAILED` | `PlayerConnection.Phase`, `PlayerConnection.phaseOf()` | `playerPhaseIsExactlyOneOfThem` |
+| Player phase | `DISCONNECTED` `EMPTY` `LOADING` `WAITING` `PLAYING` `PAUSED` `ENDED` `FAILED` | `PlayerConnection.Phase`, `PlayerConnection.phaseOf()` | `playerPhaseIsExactlyOneOfThem` |
 | Link to the playback service | `Disconnected` → `Connecting` → `Connected` | `PlayerConnection.Link` (private), `connect()` | on the emulator |
-| Playback error | `RETRY_SAME` `SKIP_NEXT` `STOP` `STOP_ALL` | `PlaybackService.ErrorAction`, `ErrorPolicy.decide()` | `aBadTrackIsSkippedButNeverInALoop`, `anExpiredYoutubeAddressIsRetriedOncePerTrack` |
-| Library scan | `Idle(lastError)` `Running(source, done, total)` | `ScanState` in `library/Scanner.kt` | `scanStateSaysWhatIsRead` |
+| Playback error | `RETRY_SAME` `WAIT_NETWORK` `RETRY_LATER` `SKIP_NEXT` `STOP` `STOP_ALL` | `PlaybackService.ErrorAction`, `ErrorPolicy.decide()` | `aBadTrackIsSkippedButNeverInALoop`, `anExpiredYoutubeAddressIsRetriedOncePerTrack` |
+| Library scan | `Idle(lastError)` `Running(places: id, name, done, total)` | `ScanState` in `library/Scanner.kt` | `scanStateSaysWhatIsRead` |
 | Scan stopped halfway | written by batches; asked-for network scans remembered until they end | `BatchWriter`, `Scanner.mustScan()`, `LocalScanner.isUpToDate()`, `Settings.scanUnfinished` | `LinksTest`: `networkScanRules`, `batchWriterKeepsEverythingInOrderOfBatches`, `phoneTrackUpToDate` |
 | Background scan queue | requests waiting, one running (WorkManager unique work `library-scan`) | `ScanRequest.mustQueue()`, `Scanner.request()`, `ScanWorker` | `LinksTest`: `scanRequestsQueueWithoutPilingUp`; on the emulator |
 | Pasted or shared link | `Reading` `Ready(slots: Pending/Found/Missing, added)` `Elsewhere(target)` `Failed(reason)` | `LinkImport` in `youtube/LinkImport.kt`, `Ready.resolve()`, run by `LinkImports` | `LinksTest`: `linkImportSettlesEachSlotOnce` |
@@ -53,6 +53,10 @@ ceremony.
 | Track menu context | `None` `InPlaylist` `InQueue` `RecentPlayed` | `MenuContext` in `ui/Ui.kt` | — |
 | Online cover search | `Idle` `Running(done, total)` `Done(found, searched)` `Failed(message)` | `OnlineCovers.State` in `library/OnlineCovers.kt`, `OnlineCovers.pick()` | `Features033Test`: `onlineCoverIsTheSameAlbumOrNone`; on the emulator |
 | Paused network place | skipped by automatic and "Rescan" scans, read when saved | `Scanner.mustScan(paused, chosen)`, `Settings.scanPaused` | `LinksTest`: `networkScanRules` |
+| Network | online or not | `NetworkWatch` in `net/` (one `StateFlow`) | on the emulator |
+| Sleep timer | `Off` `At(time)` `EndOfTrack` `EndOfAlbum` | `SleepTimer.State`, `SleepTimer.stopsAfter()`, obeyed by `PlaybackService` | `AudioTest` |
+| Queue kept for the next start | list and place, two files | `QueueStore`, `QueueStore.join()` | `Features040Test` |
+| Queue as shown | places at once, whole tracks once decoded | `PlayerConnection.readQueue()`, `fullQueue()` | on the emulator |
 | Things handed over by other apps | `PlaylistFile` `SharedText` | `Incoming.Item` in `ui/Incoming.kt` | `SmallLogicTest` (link parsing) |
 
 All tests: `./gradlew testDebugUnitTest` (`StateMachinesTest` unless another class is named).
@@ -87,6 +91,8 @@ nothing unless the link is `Disconnected`: there is never a second controller.
 
 ```
 PLAYING ──error──▶ RETRY_SAME   an expired YouTube address, once per track, same position
+                 ▶ WAIT_NETWORK the phone is offline: WAITING until it is online, then the same position
+                 ▶ RETRY_LATER  the server stopped answering while it played: again, waiting longer each time
                  ▶ SKIP_NEXT    one message, then the next track after 0.9 s
                  ▶ STOP         one message (a radio, or nothing after)
                  ▶ STOP_ALL     every track of the queue failed in a row: one message, stop
@@ -97,7 +103,7 @@ any ──a track really plays──▶ the count of consecutive failures goes b
 
 ```
 Idle ──scanLocal()──▶ Running(phone) ──▶ Idle
-Idle ──scanNetwork()──▶ Running(place 1) ──▶ Running(place 2) ──▶ … ──▶ Idle(lastError)
+Idle ──scanNetwork()──▶ Running(every place, side by side) ──▶ … ──▶ Idle(lastError)
 ```
 
 One scan at a time (a mutex): a second request waits, it never interleaves. A scan that is

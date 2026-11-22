@@ -48,6 +48,10 @@ Chud Music never modifies, moves or deletes a music file, on the phone or on a s
 - **Hide a YouTube Music artist** you never want to hear: gone from searches, mixes and artist
   pages, and restorable from Settings.
 - **Library scan in the background**, resumed where it stopped if Android interrupts it.
+- **Smart playlists** that fill themselves: never played, rediscover, recently added, most played, or
+  your own rules, exclusions, order and size.
+- **Gapless** albums, **crossfade**, **volume normalization** (ReplayGain, R128, or measured) and a
+  **sleep timer**.
 - **Player** with queue, shuffle, repeat, playback speed, a **10-band equalizer** with presets, a
   live spectrum and **synced lyrics**: the ones in your files first, otherwise from
   [LRCLIB](https://lrclib.net).
@@ -56,6 +60,9 @@ Chud Music never modifies, moves or deletes a music file, on the phone or on a s
 - **Playlist tools**: search inside a playlist, sort it, find duplicates (the best copy stays),
   swap YouTube Music tracks for your own files.
 - **Find missing covers** on Deezer and iTunes, kept in the app, never written into your files.
+- **Several shares at once**, huge libraries (read page by page), and playback and scans that go on by
+  themselves after a lost connection.
+- **Your own picture** on a playlist.
 - **Pause scanning** of a network share you know did not change.
 - **Playlists shared with [Chud Music for PC](https://github.com/BigFatDeuce/Chud-Music)**, both ways (JSON, M3U, M3U8). Tracks are found again
   on the other device even when their paths differ.
@@ -79,6 +86,7 @@ Android 8.0 or newer. The APK is signed; its SHA-256 is in `SHA256SUMS.txt` next
 
 - [User guide](docs/GUIDE.md)
 - [Exchanging playlists with the PC app](docs/PC-PLAYLISTS.md)
+- [Files exchanged with the PC app](docs/EXCHANGE.md)
 - [Building, signing and releasing](docs/BUILDING.md)
 - [What was tested, what was not, known limits](docs/TESTING.md)
 - [State machines](docs/STATE-MACHINES.md) and [AGENTS.md](AGENTS.md), for contributors and coding agents

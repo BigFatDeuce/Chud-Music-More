@@ -35,6 +35,10 @@ Les playlists s'échangent dans les deux sens avec **[Chud Music pour PC](https:
 - Fiche du morceau : format, débit, vos écoutes, et des liens sur l'artiste (YouTube Music, Wikipedia, Grokipedia, Last.fm, Discogs).
 - Playlists : recherche, tri, doublons (la meilleure copie reste), remplacement des morceaux YouTube Music par vos fichiers.
 - Pochettes manquantes trouvées sur Deezer et iTunes, gardées dans l'application, jamais écrites dans vos fichiers.
+- Playlists intelligentes : jamais écoutés, redécouverte, ajouts récents, les plus écoutés, ou vos règles, exclusions, ordre et taille.
+- Albums sans blanc, fondu enchaîné, normalisation du volume (ReplayGain, R128 ou mesure) et minuterie d'endormissement.
+- Plusieurs partages à la fois, très grandes bibliothèques, lecture et analyse qui reprennent seules après une coupure.
+- Votre image sur une playlist.
 - Analyse en pause pour un partage réseau qui n'a pas changé.
 - YouTube Music : recherche avec suggestions, pages album et artiste, « Démarrer le mix », partage d'un lien YouTube vers l'application.
 - Radio : populaires, genres, pays, favoris, écoutées récemment.

@@ -15,7 +15,9 @@ mini player above them opens the full player.
 
 ## Home
 
-- **Recently played**, then **Random**: 18 tracks of your library drawn when the app starts. The
+- **Recently played** keeps the last 10 tracks; the oldest leaves by itself. **Clear all** empties it,
+  with Undo; your statistics are kept.
+- **Random**: 18 tracks of your library drawn when the app starts. The
   draw stays the same while the app runs; the ⟳ button draws others.
 - Your playlists, recently added albums, favourite stations.
 - A dot on the gear means a new version is waiting in Settings › Updates.
@@ -72,6 +74,11 @@ in the Server field fills in the rest.
 - **Pause scanning** (open the share in Settings): when you know nothing changed on it, automatic
   scans and **Rescan** skip it. Its tracks stay in the library; saving the share reads it anyway.
 - The phone must be on the same network as the server (or reach it through a VPN).
+- You can add **as many shares as you like**, SMB and WebDAV: they are scanned side by side, and one
+  that does not answer does not hold up the others.
+- A connection lost during a scan only pauses it: the scan goes on by itself. Files already read are
+  not read again unless they changed.
+- When a share does not work, its row in Settings says why and what to do.
 
 ## YouTube Music
 
@@ -99,6 +106,9 @@ in the Server field fills in the rest.
   playlist (or album) link and its tracks are found on YouTube Music and added to it.
 - In a playlist: the ≡ handle reorders, ⋮ › "Remove from playlist" takes a track out; rename
   and delete are in the playlist's menu (your files are not touched).
+- **Change the picture**: a long press on a playlist (or its ⋮), or on the cover once it is open ›
+  *Change the image…*. The picture is copied into the app's folder; the covers of the tracks can
+  be brought back from the same menu.
 - **Delete all playlists** (the red bin at the top of Playlists) asks twice before deleting
   every playlist; it cannot be undone, so use **Export all** first to keep a copy.
 - 🔍 searches inside the playlist (title, artist, album).
@@ -113,6 +123,23 @@ in the Server field fills in the rest.
   track in your library.
 - Import and export: see [Exchanging playlists with the PC app](PC-PLAYLISTS.md).
 
+### Smart playlists
+
+**Playlists › Smart playlists** holds playlists that fill themselves by rules, and follow the library
+without anything to do. Four come with the app: *Recent additions* (the last 30 days), *Never played*,
+*Most played* and *Rediscover* (not played for 6 months). All four can be changed or deleted.
+
+**New smart playlist** starts from one of them or from nothing:
+
+- **Rules** on genre, artist, album, title, folder, year, plays, date added, last play or duration.
+  With several, choose whether a track must follow all of them or any one.
+- **Exclusions**: what must stay out, with the same rules. On a track, ⋮ › *Leave out of this
+  playlist* leaves out that one (with Undo).
+- **Order** and **maximum number of tracks**. Without a maximum, a list stops at 10,000.
+
+The number of tracks is shown while you edit. ⋮ also changes the picture, or saves the tracks of the
+moment as an ordinary playlist. Rules only apply to your library, not to YouTube Music.
+
 ## Radio
 
 Popular stations, genres, countries, worldwide search. The star adds a station to **Favorites**,
@@ -122,7 +149,22 @@ looked up too.
 
 ## Player
 
-- Shuffle, repeat (all / one), editable queue, playback speed.
+- Shuffle, repeat (all / one), playback speed.
+- **Queue**: the ≡ handle reorders. Its ⋮ menu selects several tracks to remove, removes those already
+  played, empties the queue (with or without the current track) and saves it as a playlist. A list of
+  more than 2,000 tracks is played 2,000 at a time.
+- **Resume**: the last track, its position and the queue come back after the app is closed or the
+  phone restarts, paused.
+- **Gapless**: the tracks of an album follow one another without a break, always.
+- **Crossfade** (Settings › Playback): off, or 1 to 12 seconds. Not inside an album unless you switch
+  that off, nor on the radio, nor when you change track yourself.
+- **Normalize volume (ReplayGain)**: off, by track or by album. Uses the files' ReplayGain or R128
+  tags; without tags, a track is measured the first time it is played to the end and the result
+  serves afterwards. Your files are never changed.
+- **Sleep timer** (the moon): after a number of minutes (the sound fades over the last 10 seconds), at
+  the end of the track, or at the end of the album.
+- **Connection lost**: on a share, YouTube Music or the radio, the player waits (`WAIT` on its
+  display) and goes on from where it was when the network is back.
 - **Equalizer**: 10 bands, pre-amp, presets and your own; applied to everything that plays.
 - **Lyrics**: the file's own lyrics first, when its tags hold some (MP3, FLAC, Ogg, Opus, M4A;
   synced if they carry LRC times); otherwise from LRCLIB, synced when it has them. "Search
@@ -136,6 +178,13 @@ looked up too.
   notifications and media.
 - A track that cannot be played (missing file, unsupported format, share unreachable) is skipped
   with one message; the music goes on.
+
+## Settings shared with the PC
+
+**Settings › Sync with Chud Music for PC** exports to a file, and imports, the equalizer and its
+presets, the crossfade, the volume normalization, hidden artists and favourite stations. Never a
+password nor a server's address. The PC app does not read this file yet; the format is in
+[Files exchanged with the PC app](EXCHANGE.md). Playlists have their own export.
 
 ## Statistics
 

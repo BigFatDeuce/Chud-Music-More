@@ -53,6 +53,8 @@ YouTube Music tracks (a YouTube id) are always found.
 - Files that only exist on the phone (`/storage/emulated/0/Music/…`) do not exist on the PC.
 - The phone's JSON adds a few fields (`albumArtist`, `trackNo`, `discNo`, `year`) that the PC
   ignores; they make the way back to the phone more precise.
+- Smart playlists travel with their rules (`smart`) and the tracks of the moment; on the phone, a
+  playlist's own picture travels too (`cover`). Details in [Files exchanged with the PC app](EXCHANGE.md).
 - Radio stations are not part of playlists exchanged with the PC.
 
 ## The M3U8 file written by the phone

@@ -56,6 +56,8 @@ Les morceaux YouTube Music (identifiant YouTube) sont toujours retrouvés.
   que sait faire la version PC).
 - Le JSON du téléphone ajoute quelques champs (`albumArtist`, `trackNo`, `discNo`, `year`) que le
   PC ignore ; ils rendent le retour vers le téléphone plus précis.
+- Les playlists intelligentes voyagent avec leurs règles (`smart`) et les morceaux du moment ; côté
+  téléphone, l'image choisie pour une playlist aussi (`cover`). Détails : [EXCHANGE.md](../EXCHANGE.md).
 
 ## Détails du format M3U8 écrit par le téléphone
 
