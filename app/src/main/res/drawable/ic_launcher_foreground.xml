@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- The PC app's badge (build/logo.svg), redrawn as a vector, scaled into the adaptive-icon safe zone. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp" android:height="108dp"
+    android:viewportWidth="384" android:viewportHeight="384">
+    <group android:translateX="64" android:translateY="64">
+        <path android:fillColor="#011128" android:pathData="M128,1a127,127 0 1,0 0.01,0Z" />
+        <path android:strokeColor="#F9C83A" android:strokeWidth="9" android:pathData="M128,12a116,116 0 1,0 0.01,0Z" />
+        <path android:fillColor="#123F7D" android:pathData="M72,128Q72,56 128,54Q184,56 184,128Q168,96 128,94Q88,96 72,128Z" />
+        <path android:strokeColor="#011128" android:strokeWidth="22" android:pathData="M51,132A77,80 0 0,1 205,132" />
+        <path android:strokeColor="#F9C83A" android:strokeWidth="13" android:pathData="M51,132A77,80 0 0,1 205,132" />
+        <path android:fillColor="#C8B59C" android:strokeColor="#011128" android:strokeWidth="7" android:strokeLineJoin="round"
+            android:pathData="M76,104Q128,76 180,104L174,170Q160,208 128,212Q96,208 82,170Z" />
+        <path android:fillColor="#011128" android:pathData="M46,96h5a17,17 0 0,1 17,17v44a17,17 0 0,1 -17,17h-5a17,17 0 0,1 -17,-17v-44a17,17 0 0,1 17,-17Z" />
+        <path android:fillColor="#011128" android:pathData="M205,96h5a17,17 0 0,1 17,17v44a17,17 0 0,1 -17,17h-5a17,17 0 0,1 -17,-17v-44a17,17 0 0,1 17,-17Z" />
+        <path android:fillColor="#F9C83A" android:pathData="M47,102h2a13,13 0 0,1 13,13v40a13,13 0 0,1 -13,13h-2a13,13 0 0,1 -13,-13v-40a13,13 0 0,1 13,-13Z" />
+        <path android:fillColor="#F9C83A" android:pathData="M207,102h2a13,13 0 0,1 13,13v40a13,13 0 0,1 -13,13h-2a13,13 0 0,1 -13,-13v-40a13,13 0 0,1 13,-13Z" />
+        <path android:fillColor="#011128" android:pathData="M84,112L122,126V134L84,122ZM172,112L134,126V134L172,122Z" />
+        <path android:fillColor="#FFFFFF" android:strokeColor="#011128" android:strokeWidth="6" android:pathData="M88,128h31a4,4 0 0,1 4,4v15a4,4 0 0,1 -4,4h-31a4,4 0 0,1 -4,-4v-15a4,4 0 0,1 4,-4Z" />
+        <path android:fillColor="#FFFFFF" android:strokeColor="#011128" android:strokeWidth="6" android:pathData="M137,128h31a4,4 0 0,1 4,4v15a4,4 0 0,1 -4,4h-31a4,4 0 0,1 -4,-4v-15a4,4 0 0,1 4,-4Z" />
+        <path android:strokeColor="#011128" android:strokeWidth="6" android:pathData="M123,136H133" />
+        <path android:fillColor="#011128" android:pathData="M104,133a6,6 0 1,0 0.01,0Z" />
+        <path android:fillColor="#011128" android:pathData="M152,133a6,6 0 1,0 0.01,0Z" />
+        <path android:strokeColor="#011128" android:strokeWidth="8" android:strokeLineCap="round" android:pathData="M104,186Q128,172 152,186" />
+    </group>
+</vector>

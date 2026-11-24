@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="launcher_bg">#011128</color>
+    <!-- Window background before Compose draws: the skin that follows the system (light → Platine). -->
+    <style name="Theme.Chud" parent="android:Theme.Material.Light.NoActionBar">
+        <item name="android:windowBackground">#A2A7B0</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+    </style>
+</resources>

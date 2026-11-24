@@ -11,7 +11,7 @@ No ads, no account, no tracking. Free software.
 [![Latest release](https://img.shields.io/github/v/release/BigFatDeuce/Chud-Music-More?label=release&color=c6ff2e&labelColor=101216)](https://github.com/BigFatDeuce/Chud-Music-More/releases/latest)
 [![Downloads](https://img.shields.io/github/downloads/BigFatDeuce/Chud-Music-More/total?label=downloads&color=3fd8ff&labelColor=101216)](https://github.com/BigFatDeuce/Chud-Music-More/releases)
 ![Android](https://img.shields.io/badge/Android-8.0%2B-3ddc84?labelColor=101216)
-[![GPL-3.0](https://img.shields.io/badge/licence-GPL--3.0-ffb21f?labelColor=101216)](LICENSE)
+[![GPL-3.0](https://img.shields.io/badge/licence-GPL--3.0--or--later-ffb21f?labelColor=101216)](LICENSE)
 
 [**Download**](#install) · [What it plays](#what-it-plays) · [Features](#features) · [Documentation](#documentation) · [Privacy](#privacy) · [Français](docs/fr/README.md) · [PC: Chud Music](https://github.com/BigFatDeuce/Chud-Music)
 
@@ -89,7 +89,7 @@ Android 8.0 or newer. The APK is signed; its SHA-256 is in `SHA256SUMS.txt` next
 - [Files exchanged with the PC app](docs/EXCHANGE.md)
 - [Building, signing and releasing](docs/BUILDING.md)
 - [What was tested, what was not, known limits](docs/TESTING.md)
-- [State machines](docs/STATE-MACHINES.md) and [AGENTS.md](AGENTS.md), for contributors and coding agents
+- [State machines](docs/STATE-MACHINES.md), for contributors
 
 ## Privacy
 
@@ -99,16 +99,15 @@ iTunes only when you ask for missing covers (the album's artist and title), and 
 once a day to look for a new version (this can be switched off). Share passwords are encrypted
 with a key that never leaves the phone.
 
-## Source code and licence
+## License
 
-Chud Music is free software under the **GNU General Public License, version 3** ([LICENSE](LICENSE)).
+© 2026 BigFatDeuce. The code is free software under the **GPL-3.0-or-later** (see [LICENSE](LICENSE)).
+Third-party components keep their own licences: their texts are in [licenses/](licenses/) and in the
+app (**Settings › Licenses**).
 
-This repository holds the documentation and the releases. The complete source code of each
-version is attached to its release as `ChudMusic-<version>-sources.zip`; it builds on its own
-(see [Building](docs/BUILDING.md)).
-
-The libraries and fonts it uses keep their own licences; their texts are in [licenses/](licenses/)
-and in the app (**Settings › Licenses**).
+This repository holds the complete source code (the `app/` Gradle module; see
+[Building](docs/BUILDING.md)). Each release also carries the source code of that version as
+`ChudMusic-<version>-sources.zip`.
 
 Chud Music is not affiliated with YouTube or Google. YouTube Music tracks are streamed, never
 downloaded.

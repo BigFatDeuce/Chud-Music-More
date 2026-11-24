@@ -2,8 +2,9 @@
 
 *[Version française](fr/COMPILER-ET-PUBLIER.md)*
 
-The source code of each version is the `ChudMusic-<version>-sources.zip` attached to its
-[release](https://github.com/BigFatDeuce/Chud-Music-More/releases). Unpack it and build from there.
+The source code is in this repository (GPL-3.0-or-later). The code of a given version is also the
+`ChudMusic-<version>-sources.zip` attached to its
+[release](https://github.com/BigFatDeuce/Chud-Music-More/releases).
 
 ## Requirements
 
@@ -107,13 +108,16 @@ versions can no longer be installed over old ones.
    -->
    ```
 
-7. **Update the GitHub page** (README, documentation, screenshots, licences — not the code):
+7. **Update the GitHub repository** (the source code, README, documentation, licences):
 
    ```bash
    python tools/publish-pages.py
    ```
 
-   shows what would change; with `--push` it is sent to the `main` branch.
+   shows what would change; with `--push` it is sent to the `main` branch as one ordinary commit
+   (never a force-push). `tools/public_files.py` decides what is public: the files tracked by git,
+   minus signing keys, local settings, local working notes and build outputs. It refuses to send a file holding a word of `.private-words`
+   (a local, unpublished list: names, addresses, the PC's name). The sources zip holds the same files.
 
 ## How the app finds updates
 

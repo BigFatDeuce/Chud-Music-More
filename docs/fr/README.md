@@ -8,7 +8,7 @@
 
 [![Dernière version](https://img.shields.io/github/v/release/BigFatDeuce/Chud-Music-More?label=version&color=c6ff2e&labelColor=101216)](https://github.com/BigFatDeuce/Chud-Music-More/releases/latest)
 ![Android](https://img.shields.io/badge/Android-8.0%2B-3ddc84?labelColor=101216)
-[![GPL-3.0](https://img.shields.io/badge/licence-GPL--3.0-ffb21f?labelColor=101216)](../../LICENSE)
+[![GPL-3.0](https://img.shields.io/badge/licence-GPL--3.0--or--later-ffb21f?labelColor=101216)](../../LICENSE)
 
 [**Télécharger**](https://github.com/BigFatDeuce/Chud-Music-More/releases/latest) · [English](../../README.md) · [PC : Chud Music](https://github.com/BigFatDeuce/Chud-Music)
 
@@ -64,12 +64,13 @@ autorisez l'installation quand Android le demande. Les versions suivantes s'inst
 
 ## Licence
 
-Chud Music est un logiciel libre sous licence **GNU GPL version 3** (voir [LICENSE](../../LICENSE)).
-Le code source de chaque version est joint à sa page de version, sous la forme
-`ChudMusic-<version>-sources.zip`.
+© 2026 BigFatDeuce. Le code est un logiciel libre sous licence **GPL-3.0 ou ultérieure**
+(GPL-3.0-or-later, voir [LICENSE](../../LICENSE)). Les composants tiers gardent leur propre licence :
+leurs textes se trouvent dans [licenses/](../../licenses/) et dans l'application
+(**Paramètres › Licences**).
 
-Les bibliothèques et polices utilisées gardent leur propre licence ; leurs textes se trouvent
-dans [licenses/](../../licenses/) et dans l'application (**Paramètres › Licences**).
+Ce dépôt contient le code source complet. Chaque version porte aussi le code source de cette version,
+sous la forme `ChudMusic-<version>-sources.zip`.
 
 Chud Music n'est affilié ni à YouTube ni à Google. Les morceaux de YouTube Music sont lus en
 direct, jamais téléchargés.

@@ -82,7 +82,7 @@ désinstaller l'application (après avoir exporté ses playlists) puis installer
    Le dossier `release/` contient alors :
    - `ChudMusic-X.Y.Z.apk` : l'application signée ;
    - `ChudMusic-X.Y.Z-sources.zip` : le code source complet (obligation de la GPL), **sans** la clé,
-     les sorties de compilation ni les outils locaux ; le script s'arrête s'il y trouve une clé ;
+     les sorties de compilation, les outils locaux ni les notes de travail ; le script s'arrête s'il y trouve une clé ;
    - `SHA256SUMS.txt` : les sommes de contrôle.
 
 5. **Tester** l'APK sur un téléphone ou l'émulateur, par-dessus la version précédente
@@ -99,16 +99,21 @@ désinstaller l'application (après avoir exporté ses playlists) puis installer
    - fichiers joints : l'APK, l'archive des sources et `SHA256SUMS.txt` ;
    - ni *draft* ni *pre-release* : l'application ne regarde que la dernière version publiée.
 
-Le dépôt GitHub ne contient pas le code lui-même : chaque version porte son archive de sources,
-ce qui satisfait la GPL.
+Le dépôt GitHub contient le code source complet (GPL-3.0 ou ultérieure), et chaque version porte
+en plus l'archive de ses sources.
 
-7. **Mettre à jour la page GitHub** (README, documentation, captures, licences — pas le code) :
+7. **Mettre à jour le dépôt GitHub** (code source, README, documentation, licences) :
 
    ```bash
    python tools/publish-pages.py
    ```
 
-   Le script montre ce qui changerait ; avec `--push`, il l'envoie sur la branche `main`.
+   Le script montre ce qui changerait ; avec `--push`, il l'envoie sur la branche `main` en un
+   commit ordinaire (jamais de force-push). `tools/public_files.py` décide de ce qui est public : les
+   fichiers suivis par git, sauf les clés de signature, les réglages locaux, les notes de travail
+   locales et les sorties de compilation. Il refuse d'envoyer un
+   fichier contenant un mot de `.private-words` (liste locale, jamais publiée : noms, adresses, nom du
+   PC). L'archive des sources contient les mêmes fichiers.
 
 ## Comment l'application trouve les mises à jour
 

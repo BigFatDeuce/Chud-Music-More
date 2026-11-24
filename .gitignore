@@ -1,0 +1,17 @@
+.gradle/
+build/
+/app/build/
+local.properties
+.tools/
+/keystore/
+*.jks
+.idea/
+*.iml
+/captures/
+/test-output/
+/release/
+.kotlin/
+.private-words
+.env*
+__pycache__/
+*.pyc

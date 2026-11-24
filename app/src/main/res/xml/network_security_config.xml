@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Plain HTTP is allowed: many internet radio streams are still http://, and a NAS or a home server
+  often serves WebDAV without a certificate on the local network. Certificates are still checked
+  for every https:// connection (only the system's trusted authorities).
+-->
+<network-security-config>
+    <base-config cleartextTrafficPermitted="true">
+        <trust-anchors>
+            <certificates src="system" />
+        </trust-anchors>
+    </base-config>
+</network-security-config>
