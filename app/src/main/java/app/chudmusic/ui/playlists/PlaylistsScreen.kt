@@ -1,5 +1,6 @@
 package app.chudmusic.ui.playlists
 
+import app.chudmusic.data.readAtMost
 import android.net.Uri
 import android.provider.OpenableColumns
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -73,8 +74,7 @@ class PlaylistImporter(private val ui: UiController) : (Uri) -> Unit {
                     val cr = ui.context.contentResolver
                     val name = cr.query(uri, arrayOf(OpenableColumns.DISPLAY_NAME), null, null, null)?.use { c -> if (c.moveToFirst()) c.getString(0) else null }
                         ?: uri.lastPathSegment?.substringAfterLast('/') ?: "playlist.m3u8"
-                    val bytes = cr.openInputStream(uri)?.use { it.readBytes() } ?: error("no data")
-                    if (bytes.size > 50 * 1024 * 1024) error("file too large")
+                    val bytes = cr.openInputStream(uri)?.use { it.readAtMost(50L * 1024 * 1024) } ?: error("no data")
                     ui.g.playlists.import(name, bytes.toString(Charsets.UTF_8), ui.g.library, ui.g.covers::fromDataUri)
                 }
             }
@@ -90,7 +90,7 @@ class PlaylistImporter(private val ui: UiController) : (Uri) -> Unit {
                 if (list.size == 1) ui.snack(msg, ui.str(R.string.open)) { /* the newest playlist */ ui.scope.launch { openNewest(list[0].name) } }
                 else ui.snack(msg)
             }.onFailure { e ->
-                ui.snack(if (e is PlaylistExchange.NotChudFile) ui.str(R.string.pl_import_not_chud) else ui.str(R.string.pl_import_failed, e.message ?: ""))
+                ui.snack(if (e is PlaylistExchange.NotChudFile) ui.str(R.string.pl_import_not_chud) else ui.str(R.string.pl_import_failed, if (e is app.chudmusic.data.TooLarge) ui.str(R.string.file_too_large, (e.max / (1024 * 1024)).toInt()) else e.message ?: ""))
             }
         }
     }

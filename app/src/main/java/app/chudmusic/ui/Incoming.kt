@@ -14,10 +14,4 @@ object Incoming {
     private val channel = Channel<Item>(Channel.BUFFERED)
     val items = channel.receiveAsFlow()
     fun send(item: Item) { channel.trySend(item) }
-
-    /** A YouTube / YouTube Music link → its video id. */
-    fun videoIdOf(text: String): String? {
-        val m = Regex("""(?:youtu\.be/|[?&]v=|/shorts/|/embed/)([A-Za-z0-9_-]{11})""").find(text) ?: return null
-        return m.groupValues[1]
-    }
 }

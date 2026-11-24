@@ -177,8 +177,6 @@ object PlaylistExchange {
         }
     }
 
-    private val YT = Regex("""music\.youtube\.com/watch\?v=([\w-]{11})|youtu(?:\.be/|be\.com/watch\?v=)([\w-]{11})""")
-
     private fun parseM3u(fileName: String, text: String, resolver: Resolver): Imported {
         val index = Index(resolver)
         val name = Regex("""#PLAYLIST:(.+)""").find(text)?.groupValues?.get(1)?.trim()
@@ -199,9 +197,10 @@ object PlaylistExchange {
             val (dur, label) = info ?: (null to "")
             info = null
             val (title, artist) = splitLabel(label, line)
-            val yt = YT.find(line)
+            // Read like a pasted link (as the PC does), not a pattern found anywhere in the line.
+            val yt = app.chudmusic.youtube.MusicLink.m3uVideoId(line)
             if (yt != null) {
-                tracks += Track.youtube(yt.groupValues[1].ifEmpty { yt.groupValues[2] }, title, artist, durationMs = dur)
+                tracks += Track.youtube(yt, title, artist, durationMs = dur)
                 found++
                 continue
             }

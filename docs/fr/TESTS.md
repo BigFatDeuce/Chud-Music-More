@@ -76,6 +76,20 @@ les services Internet, 4 contre un serveur SMB). Tous passent.
   l'arrêt de l'application.
 - Statistiques : toutes les sections ; les copies d'un même morceau sont regroupées.
 
+**Revue externe du 24 novembre** (version 0.4.1 ; versions debug et release)
+- Liens de pochettes pour les autres applications : une application sans aucun droit (uid 2000)
+  faisait se connecter la version 0.4.0 au serveur de son choix et lisait une pochette par son nom ;
+  avec le correctif, les deux sont refusés et rien ne se connecte, et les commandes multimédias du
+  système affichent toujours les pochettes (fichiers et images web, debug et release).
+- Partage WebDAV dont le serveur refuse HEAD : un nouveau fichier est lu avec ses tags.
+- Texte partagé depuis une autre application : `example.com/watch?v=…` lançait un morceau YouTube en
+  0.4.0 ; plus maintenant. Un vrai lien `youtu.be` se lit toujours.
+- Tests unitaires (`AuditTest`) : le corpus de liens partagé avec l'application PC plus 32 cas
+  répondus par le code même de l'application PC, WebDAV contre un serveur local (plages ignorées,
+  mauvais décalage, sans HEAD, après la fin), liens de pochettes signés, limites de taille.
+- Non vérifié : Android Auto lui-même, et le service de lecture appelé par une autre application
+  installée (la règle n'est testée qu'en unitaire).
+
 **Ajouté en 0.4.0** (22 novembre ; version debug, en français, les écrans principaux vus aussi en
 anglais ; la version release comme indiqué à la fin)
 - Image d'une playlist : appui long dans la liste et sur la pochette d'une playlist ouverte, choix

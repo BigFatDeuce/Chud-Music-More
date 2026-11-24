@@ -99,19 +99,30 @@ class LibraryCallback(
             val kept = app.chudmusic.library.QueueWindow.around(resolved.size, all)
             return@future MediaSession.MediaItemsWithStartPosition(resolved.slice(kept).map { MediaItems.toItem(it.first) }, all - kept.first, startPositionMs)
         }
-        val items = mediaItems.mapNotNull { rebuild(it) }
+        val own = isOwn(controller)
+        val items = mediaItems.mapNotNull { rebuild(it, own) }
         MediaSession.MediaItemsWithStartPosition(items, startIndex.coerceIn(0, (items.size - 1).coerceAtLeast(0)), startPositionMs)
     }
 
     override fun onAddMediaItems(mediaSession: MediaSession, controller: MediaSession.ControllerInfo, mediaItems: List<MediaItem>): ListenableFuture<List<MediaItem>> =
-        scope.future(Dispatchers.IO) { mediaItems.mapNotNull { rebuild(it) } }
+        scope.future(Dispatchers.IO) { val own = isOwn(controller); mediaItems.mapNotNull { rebuild(it, own) } }
 
-    /** Items from a controller have no URI (Media3 strips it): rebuild them from the Track in their extras or from the database. */
-    private suspend fun rebuild(item: MediaItem): MediaItem? {
-        if (item.localConfiguration != null) return item
+    private fun isOwn(controller: MediaSession.ControllerInfo) =
+        trustsTrackExtras(controller.packageName, controller.uid, context.packageName, android.os.Process.myUid())
+
+    /**
+     * Items from a controller have no URI (Media3 strips it): rebuild them from the Track in their
+     * extras or from the database. The Track in the extras carries its address, so only this app's
+     * own screens are believed: any other app (the service is exported for Android Auto and the
+     * system) could otherwise make Chud Music open any address with its own rights and saved
+     * network passwords. Other controllers get the tracks the app already knows, by id.
+     */
+    private suspend fun rebuild(item: MediaItem, own: Boolean): MediaItem? {
+        if (own && item.localConfiguration != null) return item
         val queued = MediaItems.isQueued(item)
-        MediaItems.track(item)?.let { return MediaItems.toItem(it, queued) }
-        return resolve(item.mediaId).firstOrNull { it.second }?.first?.let { MediaItems.toItem(it, queued) }
+        if (own) MediaItems.track(item)?.let { return MediaItems.toItem(it, queued) }
+        val id = item.mediaId.ifEmpty { MediaItems.track(item)?.id ?: return null }
+        return resolve(id).firstOrNull { it.second }?.first?.let { MediaItems.toItem(it, queued) }
     }
 
     override fun onSearch(session: MediaLibrarySession, browser: MediaSession.ControllerInfo, query: String, params: LibraryParams?): ListenableFuture<LibraryResult<Void>> =
@@ -142,5 +153,8 @@ class LibraryCallback(
         const val ARTISTS = "artists"
         const val RECENT = "recent"
         const val RADIOS = "radios"
+
+        /** The controller is this app itself: same package and same Linux user id. */
+        fun trustsTrackExtras(pkg: String, uid: Int, ownPkg: String, ownUid: Int) = pkg == ownPkg && uid == ownUid
     }
 }

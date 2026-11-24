@@ -166,6 +166,7 @@
     <string name="pl_exported">Playlist exported</string>
     <string name="pl_export_failed">Export failed: %1$s</string>
     <string name="pl_import_failed">Import failed: %1$s</string>
+    <string name="file_too_large">file too large (over %1$d MB)</string>
     <string name="pl_import_not_chud">This JSON file is not a Chud Music playlist export.</string>
     <string name="pl_swap_local">Replace YouTube tracks with my files</string>
     <string name="pl_swap_none">No YouTube track of this playlist has a match in your library.</string>

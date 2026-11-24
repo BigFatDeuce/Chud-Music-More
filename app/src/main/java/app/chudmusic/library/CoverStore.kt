@@ -1,5 +1,6 @@
 package app.chudmusic.library
 
+import app.chudmusic.data.readAtMost
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
@@ -69,7 +70,7 @@ class CoverStore(context: Context) {
                 if (s > 1024) d.setTargetSampleSize(s / 512)
             }
         } else {
-            val bytes = context.contentResolver.openInputStream(uri)?.use { it.readBytes() } ?: return null
+            val bytes = context.contentResolver.openInputStream(uri)?.use { it.readAtMost(40L * 1024 * 1024) } ?: return null
             return saveBytes(chosenKey(), bytes)
         }
         saveBitmap(chosenKey(), square(bmp))

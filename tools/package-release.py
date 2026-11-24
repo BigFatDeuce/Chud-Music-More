@@ -46,9 +46,7 @@ def main():
     v = version()
     bad = problems(public_files())
     if bad:
-        sys.exit("ARRÊT, à corriger d'abord :
-" + "
-".join("  " + b for b in bad))
+        sys.exit("ARRÊT, à corriger d'abord :\n" + "\n".join("  " + b for b in bad))
     out = ROOT / "release"
     out.mkdir(exist_ok=True)
 

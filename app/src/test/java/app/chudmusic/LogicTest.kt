@@ -7,7 +7,6 @@ import app.chudmusic.library.Library
 import app.chudmusic.lyrics.Lyrics
 import app.chudmusic.model.Source
 import app.chudmusic.model.Track
-import app.chudmusic.ui.Incoming
 import app.chudmusic.update.Updater
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
@@ -114,10 +113,11 @@ class SmallLogicTest {
     }
 
     @Test fun youtubeLinksFromSharedText() {
-        assertEquals("kXYiU_JCYtU", Incoming.videoIdOf("Écoute ça https://music.youtube.com/watch?v=kXYiU_JCYtU&si=abc"))
-        assertEquals("kXYiU_JCYtU", Incoming.videoIdOf("https://youtu.be/kXYiU_JCYtU?t=10"))
-        assertEquals("kXYiU_JCYtU", Incoming.videoIdOf("https://www.youtube.com/shorts/kXYiU_JCYtU"))
-        assertNull(Incoming.videoIdOf("https://example.com/watch"))
+        fun id(text: String) = (app.chudmusic.youtube.MusicLink.find(text) as? app.chudmusic.youtube.MusicLink.YtVideo)?.id
+        assertEquals("kXYiU_JCYtU", id("Écoute ça https://music.youtube.com/watch?v=kXYiU_JCYtU&si=abc"))
+        assertEquals("kXYiU_JCYtU", id("https://youtu.be/kXYiU_JCYtU?t=10"))
+        assertEquals("kXYiU_JCYtU", id("https://www.youtube.com/shorts/kXYiU_JCYtU"))
+        assertNull(id("https://example.com/watch"))
     }
 
     @Test fun albumsSplitByFolderAndJoinDiscFolders() {

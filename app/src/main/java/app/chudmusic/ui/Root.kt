@@ -147,13 +147,13 @@ fun ChudRoot() {
             when (item) {
                 is Incoming.Item.PlaylistFile -> importer(item.uri)
                 is Incoming.Item.SharedText -> {
-                    val id = Incoming.videoIdOf(item.text)
+                    // Read by the same rules as a link pasted in the search box (and as on the PC).
                     val link = app.chudmusic.youtube.MusicLink.find(item.text)
                     // A song plays at once; a playlist, an album or a Spotify link opens as a list.
-                    if (link != null && link !is app.chudmusic.youtube.MusicLink.YtVideo) ui.openLink(item.text)
-                    else if (id == null) ui.snack(ui.str(R.string.share_not_youtube))
+                    if (link == null) ui.snack(ui.str(R.string.share_not_youtube))
+                    else if (link !is app.chudmusic.youtube.MusicLink.YtVideo) ui.openLink(item.text)
                     else {
-                        val t = withContext(Dispatchers.IO) { runCatching { g.youtube.song(id) }.getOrNull() }
+                        val t = withContext(Dispatchers.IO) { runCatching { g.youtube.song(link.id) }.getOrNull() }
                         if (t != null) { ui.play(listOf(t)); ui.playerOpen = true } else ui.snack(ui.str(R.string.yt_error_generic))
                     }
                 }

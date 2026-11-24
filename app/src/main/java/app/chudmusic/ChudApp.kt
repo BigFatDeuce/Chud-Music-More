@@ -80,6 +80,7 @@ class ChudApp : Application(), SingletonImageLoader.Factory {
 
     override fun onCreate() {
         super.onCreate()
+        app.chudmusic.ui.covers.CoverProvider.init(this)
         graph = AppGraph(this)
         YouTubeStreams.init(Locale.getDefault().language.ifBlank { "fr" }, Locale.getDefault().country.ifBlank { "FR" })
         graph.network.start()

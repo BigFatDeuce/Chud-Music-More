@@ -77,6 +77,20 @@ Internet services, 4 against an SMB server). All pass.
 - Equalizer, synced lyrics, shuffle, repeat, queue, queue restored after the app is stopped.
 - Statistics: every section; copies of the same track are counted together.
 
+**External review of 24 November** (version 0.4.1; debug and release builds)
+- Cover links for other apps: an app without any right (uid 2000) made version 0.4.0 connect to a
+  server of its choice and read a cover by its name; with the fix both are refused and nothing
+  connects, while the system's media controls still show the covers (files and web images, debug
+  and release).
+- WebDAV share whose server refuses HEAD: a new file is read with its tags.
+- Text shared from another app: `example.com/watch?v=…` played a YouTube song in 0.4.0; no longer.
+  A real `youtu.be` link still plays.
+- Unit tests (`AuditTest`): the music-link corpus shared with the PC app plus 32 cases answered by
+  the PC app's own code, WebDAV against a local server (ranges ignored, wrong offset, no HEAD,
+  past the end), signed cover links, size limits.
+- Not checked: Android Auto itself, and the playback service called by another installed app
+  (the rule is unit-tested only).
+
 **Added in 0.4.0** (22 November; debug build, French, with the main screens also seen in English;
 the release build as stated at the end)
 - Playlist picture: long press in the list and on the cover of an opened playlist, photo picker,

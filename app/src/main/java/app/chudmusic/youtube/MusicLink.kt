@@ -1,7 +1,5 @@
 package app.chudmusic.youtube
 
-import java.net.URI
-
 /**
  * A music link pasted in the YouTube Music search box or shared to the app: YouTube / YouTube
  * Music or Spotify. Only the link's kind and id are read here; nothing is fetched. Same rules as
@@ -28,14 +26,12 @@ sealed interface MusicLink {
 
         /** The link this text is (a URL or a spotify: URI), or null when it is not one. */
         fun parse(input: String): MusicLink? {
-            val text = input.trim()
-            if (text.isEmpty() || text.any { it.isWhitespace() }) return null
+            val text = input.trim { it.isWhitespace() || it == '﻿' }
+            if (text.isEmpty() || text.any { it.isWhitespace() || it == '﻿' }) return null
             SPOTIFY_URI.matchEntire(text)?.let { m -> return Spotify(spotifyKind(m.groupValues[1])!!, m.groupValues[2]) }
-            val uri = runCatching { URI(if (Regex("^[a-z]+://", RegexOption.IGNORE_CASE).containsMatchIn(text)) text else "https://$text") }.getOrNull() ?: return null
-            if (uri.scheme?.lowercase() !in setOf("http", "https")) return null
-            val host = uri.host?.lowercase() ?: return null
-            val parts = (uri.rawPath ?: "").split('/').filter { it.isNotEmpty() }
-            val query = queryOf(uri.rawQuery)
+            val url = WebUrl.parse(if (Regex("^[a-z]+://", RegexOption.IGNORE_CASE).containsMatchIn(text)) text else "https://$text") ?: return null
+            val host = url.host
+            val parts = url.segments
 
             if (host == "open.spotify.com" || host == "play.spotify.com") {
                 // /track/ID, /intl-fr/album/ID, /embed/playlist/ID
@@ -48,8 +44,13 @@ sealed interface MusicLink {
                 return if (id != null && VIDEO.matches(id)) YtVideo(id) else null
             }
             if (!YT_HOSTS.matches(host)) return null
-            val v = query["v"]?.takeIf { VIDEO.matches(it) }
-            val list = query["list"]
+            // A parameter given twice with two values names two things: not a link. Neither app
+            // guesses which one was meant (the PC app reads links the same way).
+            val vs = url.query.filter { it.first == "v" }.map { it.second }.toSet()
+            val lists = url.query.filter { it.first == "list" }.map { it.second }.toSet()
+            if (vs.size > 1 || lists.size > 1) return null
+            val v = vs.firstOrNull()?.takeIf { VIDEO.matches(it) }
+            val list = lists.firstOrNull()
             // A "radio" list (RD…) is generated around the video: the video is what was shared.
             if (list != null && !list.startsWith("RD") && Regex("""^[\w-]{10,}$""").matches(list)) return YtPlaylist(list, v)
             if (v != null) return YtVideo(v)
@@ -65,11 +66,78 @@ sealed interface MusicLink {
         fun find(text: String): MusicLink? =
             parse(text) ?: URL_IN_TEXT.findAll(text).firstNotNullOfOrNull { parse(it.value.trimEnd('.', ',', ')', '!', '?')) }
 
-        private fun spotifyKind(s: String) = SpotifyKind.entries.firstOrNull { it.path == s }
+        /**
+         * The YouTube video of an M3U line: a video link, or the video of a watch link inside a
+         * playlist; null otherwise (same as the PC app's m3uVideoId).
+         */
+        fun m3uVideoId(line: String): String? = when (val l = parse(line)) {
+            is YtVideo -> l.id
+            is YtPlaylist -> l.videoId
+            else -> null
+        }
 
-        private fun queryOf(raw: String?): Map<String, String> = raw.orEmpty().split('&').mapNotNull { p ->
-            val k = p.substringBefore('=', "").ifEmpty { return@mapNotNull null }
-            k to java.net.URLDecoder.decode(p.substringAfter('=', ""), "UTF-8")
-        }.toMap()
+        private fun spotifyKind(s: String) = SpotifyKind.entries.firstOrNull { it.path == s }
+    }
+}
+
+/**
+ * The parts of a web address that a music link needs, read the way a browser reads them (the PC
+ * app uses the browser's URL and URLSearchParams). java.net.URI refuses characters that browsers
+ * accept (`|`, `{`, a stray `%`), which made the same link work on the PC and not here.
+ */
+internal class WebUrl(val host: String, val segments: List<String>, val query: List<Pair<String, String>>) {
+    companion object {
+        private const val FORBIDDEN_IN_HOST = " #%/:<>?@[\\]^|"
+
+        fun parse(text: String): WebUrl? {
+            val scheme = text.substringBefore("://", "").lowercase()
+            if (scheme != "http" && scheme != "https") return null
+            // For http(s), a browser takes a backslash for a slash.
+            val rest = text.substringAfter("://").replace('\\', '/')
+            val authority = rest.takeWhile { it != '/' && it != '?' && it != '#' }
+            val hostPort = authority.substringAfterLast('@')
+            // An IPv6 address is kept as it is: it is never a music service anyway.
+            val host = if (hostPort.startsWith("[")) hostPort.lowercase() else {
+                val port = hostPort.substringAfterLast(':', "")
+                if (port.any { !it.isDigit() }) return null
+                percentDecode(hostPort.substringBeforeLast(':'), plus = false).lowercase()
+                    .takeIf { h -> h.isNotEmpty() && h.none { it in FORBIDDEN_IN_HOST } } ?: return null
+            }
+            val afterAuthority = rest.substring(authority.length).substringBefore('#')
+            val path = afterAuthority.substringBefore('?')
+            val query = if (afterAuthority.contains('?')) afterAuthority.substringAfter('?') else ""
+            val segments = ArrayList<String>()
+            for (seg in path.split('/')) when (seg.lowercase()) {
+                "", ".", "%2e" -> {}
+                "..", ".%2e", "%2e.", "%2e%2e" -> if (segments.isNotEmpty()) segments.removeAt(segments.lastIndex)
+                else -> segments += seg
+            }
+            return WebUrl(host, segments, formPairs(query))
+        }
+
+        /** URLSearchParams: `&`-separated, `+` is a space, names and values percent-decoded. */
+        fun formPairs(query: String): List<Pair<String, String>> = query.split('&').filter { it.isNotEmpty() }.map { p ->
+            val k = p.substringBefore('=')
+            val v = if (p.contains('=')) p.substringAfter('=') else ""
+            percentDecode(k, plus = true) to percentDecode(v, plus = true)
+        }
+
+        /** Like a browser: a `%` not followed by two hex digits stays as it is; bad UTF-8 becomes U+FFFD. */
+        fun percentDecode(s: String, plus: Boolean): String {
+            val bytes = s.toByteArray(Charsets.UTF_8)
+            val out = java.io.ByteArrayOutputStream(bytes.size)
+            var i = 0
+            while (i < bytes.size) {
+                val b = bytes[i]
+                val hi = if (i + 2 <= bytes.lastIndex) Character.digit(bytes[i + 1].toInt(), 16) else -1
+                val lo = if (hi >= 0) Character.digit(bytes[i + 2].toInt(), 16) else -1
+                when {
+                    b == '%'.code.toByte() && hi >= 0 && lo >= 0 -> { out.write(hi * 16 + lo); i += 3 }
+                    plus && b == '+'.code.toByte() -> { out.write(' '.code); i++ }
+                    else -> { out.write(b.toInt()); i++ }
+                }
+            }
+            return String(out.toByteArray(), Charsets.UTF_8)
+        }
     }
 }

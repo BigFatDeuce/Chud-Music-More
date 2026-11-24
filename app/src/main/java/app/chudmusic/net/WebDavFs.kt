@@ -95,18 +95,32 @@ class WebDavFs(private val target: DavTarget) : RemoteFs {
         override val length: Long by lazy {
             client.newCall(req(target.url(path)).head().build()).execute().use { r ->
                 if (r.code == 404) throw FileNotFoundException(path)
+                if (r.isSuccessful) return@lazy r.header("Content-Length")?.toLongOrNull() ?: -1
+                if (r.code != 405 && r.code != 501) throw RemoteUnreachable("HTTP ${r.code}")
+            }
+            // Some servers refuse HEAD: the total size is in the answer to a one-byte range.
+            client.newCall(req(target.url(path)).header("Range", "bytes=0-0").build()).execute().use { r ->
+                if (r.code == 404) throw FileNotFoundException(path)
                 if (!r.isSuccessful) throw RemoteUnreachable("HTTP ${r.code}")
-                r.header("Content-Length")?.toLongOrNull() ?: -1
+                if (r.code == 206) rangeTotal(r.header("Content-Range")) ?: -1 else r.body.contentLength()
             }
         }
 
         override fun read(pos: Long, buf: ByteArray, off: Int, len: Int): Int {
+            if (len <= 0) return 0
             if (length in 0..pos) return -1
             val end = pos + len - 1
             client.newCall(req(target.url(path)).header("Range", "bytes=$pos-$end").build()).execute().use { r ->
+                if (r.code == 416) return -1 // past the end of a file whose size was not known
                 if (!r.isSuccessful) throw RemoteUnreachable("HTTP ${r.code}")
                 val stream = r.body.byteStream()
-                if (r.code == 200 && pos > 0) stream.skip(pos) // server without ranges
+                when (r.code) {
+                    // A server without ranges sends the whole file: go to [pos] in it.
+                    200 -> if (pos > 0) skipFully(stream, pos)
+                    // A part that does not start where asked would give wrong bytes: refused.
+                    206 -> rangeStart(r.header("Content-Range"))?.let { if (it != pos) throw RemoteUnreachable("Content-Range $it, not $pos") }
+                    else -> throw RemoteUnreachable("HTTP ${r.code}")
+                }
                 var done = 0
                 while (done < len) {
                     val n = stream.read(buf, off + done, len - done)
@@ -121,4 +135,26 @@ class WebDavFs(private val target: DavTarget) : RemoteFs {
     }
 
     override fun close() {}
+
+    companion object {
+        /** InputStream.skip may skip less than asked: goes on until [n] bytes are passed, or fails at the end. */
+        fun skipFully(stream: java.io.InputStream, n: Long) {
+            var left = n
+            while (left > 0) {
+                val skipped = stream.skip(left)
+                if (skipped > 0) { left -= skipped; continue }
+                // skip() may return 0 before the end: one read tells which it is.
+                if (stream.read() < 0) throw java.io.EOFException("end of file $left bytes before the position")
+                left--
+            }
+        }
+
+        private val CONTENT_RANGE = Regex("""^bytes (\d+)-(\d+)/(\d+|\*)$""")
+
+        /** The first byte of a "Content-Range: bytes 100-199/5000" answer, or null. */
+        fun rangeStart(header: String?): Long? = header?.trim()?.let { CONTENT_RANGE.matchEntire(it) }?.groupValues?.get(1)?.toLongOrNull()
+
+        /** The file's total size in a Content-Range answer, or null when the server does not say it. */
+        fun rangeTotal(header: String?): Long? = header?.trim()?.let { CONTENT_RANGE.matchEntire(it) }?.groupValues?.get(3)?.toLongOrNull()
+    }
 }

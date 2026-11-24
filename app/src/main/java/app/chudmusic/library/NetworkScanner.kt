@@ -284,7 +284,8 @@ class NetworkScanner(private val db: ChudDatabase, private val sources: NetworkS
         if (pick.size > 15_000_000) return null
         return runCatching {
             fs.open(pick.path).use { f ->
-                val bytes = ByteArray(f.length.toInt())
+                // The size the server gives when the file is opened, not only the listing's: never trusted blindly.
+                val bytes = ByteArray(f.length.takeIf { it in 1..15_000_000 }?.toInt() ?: return null)
                 var got = 0
                 while (got < bytes.size) { val n = f.read(got.toLong(), bytes, got, bytes.size - got); if (n <= 0) break; got += n }
                 covers.saveBytes(key, bytes)

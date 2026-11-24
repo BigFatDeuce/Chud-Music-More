@@ -1,5 +1,6 @@
 package app.chudmusic.ui.settings
 
+import app.chudmusic.data.readAtMost
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.material3.Slider
@@ -287,7 +288,7 @@ private fun GainRow() {
 @Composable
 private fun SyncGroup() {
     val ui = LocalUi.current
-    fun fail(e: Throwable) = ui.snack(if (e is SettingsExchange.NotSettings) ui.str(R.string.set_sync_bad) else ui.str(R.string.set_sync_failed, e.message ?: e.javaClass.simpleName))
+    fun fail(e: Throwable) = ui.snack(if (e is SettingsExchange.NotSettings) ui.str(R.string.set_sync_bad) else ui.str(R.string.set_sync_failed, if (e is app.chudmusic.data.TooLarge) ui.str(R.string.file_too_large, (e.max / (1024 * 1024)).toInt()) else e.message ?: e.javaClass.simpleName))
     val export = rememberLauncherForActivityResult(ActivityResultContracts.CreateDocument("application/json")) { uri ->
         uri ?: return@rememberLauncherForActivityResult
         ui.scope.launch {
@@ -304,7 +305,7 @@ private fun SyncGroup() {
         ui.scope.launch {
             withContext(Dispatchers.IO) {
                 runCatching {
-                    val bytes = ui.context.contentResolver.openInputStream(uri)?.use { it.readBytes() } ?: error("read")
+                    val bytes = ui.context.contentResolver.openInputStream(uri)?.use { it.readAtMost(5L * 1024 * 1024) } ?: error("read")
                     SettingsExchange.import(bytes.decodeToString(), ui.g.settings, ui.g.db)
                 }
             }.onSuccess { ui.snack(ui.str(R.string.set_sync_imported)) }.onFailure(::fail)
