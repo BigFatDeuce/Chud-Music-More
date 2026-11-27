@@ -57,6 +57,20 @@ class CoverLinks(private val key: ByteArray) {
         }
 
         /**
+         * A picture whose header gives a size other apps can show: the system and Android Auto may
+         * decode a cover in full, and a small file can claim a huge size (4 bytes per pixel).
+         * Width and height of 0 or less: no readable header.
+         */
+        fun sizeOk(width: Int, height: Int, maxSide: Int): Boolean = width in 1..maxSide && height in 1..maxSide
+
+        /**
+         * The web covers to delete before a download starts: up to [inFlight] bytes may still be
+         * coming from downloads under way, and the cache with them must stay under [max].
+         */
+        fun toTrimBeforeDownload(files: List<Triple<String, Long, Long>>, max: Long, keep: Long, inFlight: Long): List<String> =
+            toTrim(files, max - inFlight, minOf(keep, max - inFlight))
+
+        /**
          * The web covers to delete so that the cache stays small: when it is over [max] bytes, the
          * oldest go until [keep] bytes or less are left. [files]: name, size, last modified.
          */

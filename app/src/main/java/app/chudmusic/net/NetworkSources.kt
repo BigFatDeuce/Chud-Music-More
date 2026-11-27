@@ -45,6 +45,9 @@ class NetworkSources(private val dao: SourceDao) {
             NetKind.WEBDAV -> WebDavFs(DavTarget(davBase(e), e.username, password))
         }
 
+        /** A WebDAV place over plain http with a password: it crosses the network in clear (warned in Settings). */
+        fun passwordInClear(e: NetworkSourceEntity) = e.kind == NetKind.WEBDAV && !e.useHttps && e.passwordEnc != null
+
         fun davBase(e: NetworkSourceEntity): String {
             val scheme = if (e.useHttps) "https" else "http"
             val port = e.port?.let { ":$it" } ?: ""

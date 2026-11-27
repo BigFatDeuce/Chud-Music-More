@@ -137,6 +137,8 @@ class AuditTest {
                         start > content.lastIndex -> send(416, ByteArray(0), mapOf("Content-Range" to "bytes */${content.size}"))
                         mode == "wrongOffset" -> send(206, content.copyOfRange(0, end - start + 1), mapOf("Content-Range" to "bytes 0-${end - start}/${content.size}"))
                         mode == "noContentRange" -> send(206, content.copyOfRange(start, end + 1))
+                        // The file was replaced by a bigger one after its size was read.
+                        mode == "changedFile" -> send(206, content.copyOfRange(start, end + 1), mapOf("Content-Range" to "bytes $start-$end/6000"))
                         else -> send(206, content.copyOfRange(start, end + 1), mapOf("Content-Range" to "bytes $start-$end/${content.size}"))
                     }
                 }
@@ -180,10 +182,62 @@ class AuditTest {
         }
     }
 
-    /** A 206 without Content-Range: nothing tells where it starts, but it answers the range asked. */
+    /**
+     * A 206 without Content-Range: nothing tells what the bytes are (a multipart answer has none
+     * either), so they are refused. Accepted until the second review of 25 November.
+     */
     @Test fun davPartialAnswerWithoutContentRange() {
-        val fs = serve("noContentRange")
-        assertArrayEquals(content.copyOfRange(1234, 1334), readAt(fs, 1234, 100))
+        assertRefused(serve("noContentRange"))
+    }
+
+    /** A 206 whose total size is not the size first read: the file changed, its bytes are not mixed. */
+    @Test fun davPartialAnswerOfAChangedFile() {
+        assertRefused(serve("changedFile"))
+    }
+
+    private fun assertRefused(fs: WebDavFs) {
+        try {
+            val got = readAt(fs, 1234, 100)
+            fail("unchecked bytes were returned: ${got?.take(4)}")
+        } catch (e: IOException) {
+            // refused: reported as unreadable instead of played wrong
+        }
+    }
+
+    /** Every part of a range answer is checked against the question, not only where it starts. */
+    @Test fun partialAnswerIsCheckedInFull() {
+        fun p(code: Int, cr: String?, cl: Long, pos: Long = 100, length: Long = 5000) = WebDavFs.answerProblem(code, cr, cl, pos, length)
+        assertNull(p(206, "bytes 100-199/5000", 100))
+        assertNull(p(206, "bytes 100-199/*", 100))
+        assertNull(p(206, "bytes 100-199/5000", -1)) // chunked: no length to compare
+        assertNull(p(206, "bytes 100-4999/5000", 4900)) // more than asked: only what was asked is read
+        assertNull(p(206, "bytes 100-199/5000", 100, length = -1)) // size never known
+        assertNull(p(200, null, 5000))
+        assertNull(p(200, null, -1))
+        assertTrue(p(206, null, 100) != null) // no Content-Range
+        assertTrue(p(206, "bytes */5000", 100) != null)
+        assertTrue(p(206, "bytes 0-99/5000", 100) != null) // wrong start
+        assertTrue(p(206, "bytes 100-50/5000", 51) != null) // ends before it starts
+        assertTrue(p(206, "bytes 100-5000/5000", 4901) != null) // ends past the file
+        assertTrue(p(206, "bytes 100-199/6000", 100) != null) // the file changed
+        assertTrue(p(206, "bytes 100-199/5000", 60) != null) // body shorter than announced
+        assertTrue(p(206, "bytes 100-199/5000", 500) != null) // body longer than announced
+        assertTrue(p(200, null, 6000) != null) // whole file, but not the one first seen
+        assertTrue(p(204, null, 0) != null)
+    }
+
+    /**
+     * Ports, as the PC app reads them (answers given by its own code, src/shared/links.ts, on
+     * 25 November): over 65535 or not ASCII digits is not a link; Android took both.
+     */
+    @Test fun portsLikeThePc() {
+        val v = "/watch?v=dQw4w9WgXcQ"
+        for (port in listOf("65535", "00000000443", "0", ""))
+            assertEquals(port, MusicLink.YtVideo("dQw4w9WgXcQ"), MusicLink.parse("https://www.youtube.com:$port$v"))
+        for (port in listOf("65536", "99999", "٣", "１２", "4a", "-1", "+1"))
+            assertNull(port, MusicLink.parse("https://www.youtube.com:$port$v"))
+        assertNull(MusicLink.parse("youtu.be:70000/dQw4w9WgXcQ"))
+        assertNull(MusicLink.parse("https://open.spotify.com:65536/track/4uLU6hMCjMI75M1A2tKUQC"))
     }
 
     /** Some servers refuse HEAD: the size comes from a one-byte range instead of failing the file. */
@@ -265,6 +319,28 @@ class AuditTest {
         assertEquals((1..7).map { "f$it" }, CoverLinks.toTrim(more, max = 100, keep = 80))
     }
 
+    /** A cover claiming a huge size is not handed to other apps, nor one without a readable size. */
+    @Test fun coverSizeIsChecked() {
+        assertTrue(CoverLinks.sizeOk(1280, 720, 4096))
+        assertTrue(CoverLinks.sizeOk(4096, 1, 4096))
+        assertFalse(CoverLinks.sizeOk(4097, 100, 4096))
+        assertFalse(CoverLinks.sizeOk(100, 65535, 4096))
+        assertFalse(CoverLinks.sizeOk(-1, -1, 4096)) // header not readable
+        assertFalse(CoverLinks.sizeOk(0, 500, 4096))
+    }
+
+    /** Two downloads running at once must not take the cache over its maximum, even for a moment. */
+    @Test fun coverCacheLeavesRoomForDownloadsUnderWay() {
+        val max = 60L; val keep = 40L; val perDownload = 8L; val parallel = 2
+        val files = (1..7).map { Triple("f$it", 7L, it.toLong()) } // 49: under max, but 49 + 16 is not
+        val gone = CoverLinks.toTrimBeforeDownload(files, max, keep, parallel * perDownload).toSet()
+        val left = files.filter { it.first !in gone }.sumOf { it.second }
+        assertTrue("left $left", left + parallel * perDownload <= max)
+        assertEquals(listOf("f1", "f2"), gone.sorted()) // the oldest go first
+        // Already small enough: nothing goes.
+        assertEquals(emptyList<String>(), CoverLinks.toTrimBeforeDownload(files.take(5), max, keep, parallel * perDownload))
+    }
+
     // ── Found by this review ──────────────────────────────────────────────────────────────────
 
     /**
@@ -292,5 +368,14 @@ class AuditTest {
         } catch (e: TooLarge) {
             assertTrue("stopped soon after the limit, read $read", read < 1_200_000)
         }
+    }
+
+    /** A WebDAV place over plain http with a saved password is flagged in Settings, not only in its form. */
+    @Test fun clearPasswordIsFlagged() {
+        val dav = app.chudmusic.data.NetworkSourceEntity(kind = app.chudmusic.data.NetKind.WEBDAV, name = "n", host = "h", share = "", useHttps = false, passwordEnc = "x")
+        assertTrue(app.chudmusic.net.NetworkSources.passwordInClear(dav))
+        assertFalse(app.chudmusic.net.NetworkSources.passwordInClear(dav.copy(useHttps = true)))
+        assertFalse(app.chudmusic.net.NetworkSources.passwordInClear(dav.copy(passwordEnc = null)))
+        assertFalse(app.chudmusic.net.NetworkSources.passwordInClear(dav.copy(kind = app.chudmusic.data.NetKind.SMB)))
     }
 }

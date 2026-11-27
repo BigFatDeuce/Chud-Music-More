@@ -22,7 +22,7 @@ android {
         minSdk = 26
         targetSdk = 36
         // -PchudVersionName / -PchudUpdateApi only serve to test the updater against a local server.
-        versionName = (project.findProperty("chudVersionName") as String?) ?: "0.4.1"
+        versionName = (project.findProperty("chudVersionName") as String?) ?: "0.4.2"
         // Derived from the name so it always grows: 0.1.0 → 100, 1.2.3 → 10203 (Android refuses a lower one).
         versionCode = versionName!!.split('.', '-').take(3).map { it.toIntOrNull() ?: 0 }
             .let { v -> v.getOrElse(0) { 0 } * 10000 + v.getOrElse(1) { 0 } * 100 + v.getOrElse(2) { 0 } }.coerceAtLeast(1)

@@ -113,14 +113,10 @@ class WebDavFs(private val target: DavTarget) : RemoteFs {
             client.newCall(req(target.url(path)).header("Range", "bytes=$pos-$end").build()).execute().use { r ->
                 if (r.code == 416) return -1 // past the end of a file whose size was not known
                 if (!r.isSuccessful) throw RemoteUnreachable("HTTP ${r.code}")
+                answerProblem(r.code, r.header("Content-Range"), r.body.contentLength(), pos, length)?.let { throw RemoteUnreachable(it) }
                 val stream = r.body.byteStream()
-                when (r.code) {
-                    // A server without ranges sends the whole file: go to [pos] in it.
-                    200 -> if (pos > 0) skipFully(stream, pos)
-                    // A part that does not start where asked would give wrong bytes: refused.
-                    206 -> rangeStart(r.header("Content-Range"))?.let { if (it != pos) throw RemoteUnreachable("Content-Range $it, not $pos") }
-                    else -> throw RemoteUnreachable("HTTP ${r.code}")
-                }
+                // A server without ranges sends the whole file: go to [pos] in it.
+                if (r.code == 200 && pos > 0) skipFully(stream, pos)
                 var done = 0
                 while (done < len) {
                     val n = stream.read(buf, off + done, len - done)
@@ -147,6 +143,32 @@ class WebDavFs(private val target: DavTarget) : RemoteFs {
                 if (stream.read() < 0) throw java.io.EOFException("end of file $left bytes before the position")
                 left--
             }
+        }
+
+        /**
+         * Why the answer to a range asked from [pos] cannot be read as the file's bytes from there,
+         * or null when it can. [length]: the file's size as first seen, -1 when unknown. A server
+         * may ignore the range (200, the whole file) or send more than asked; wrong bytes must
+         * never be played as the right ones, nor bytes of a file that changed in between.
+         */
+        fun answerProblem(code: Int, contentRange: String?, contentLength: Long, pos: Long, length: Long): String? = when (code) {
+            200 -> if (length >= 0 && contentLength >= 0 && contentLength != length) "file size $contentLength, was $length" else null
+            206 -> {
+                // Without Content-Range (a multipart answer, or a broken server) nothing says what the bytes are.
+                val m = contentRange?.trim()?.let { CONTENT_RANGE.matchEntire(it) }
+                val first = m?.groupValues?.get(1)?.toLongOrNull()
+                val last = m?.groupValues?.get(2)?.toLongOrNull()
+                val total = m?.groupValues?.get(3)?.toLongOrNull()
+                when {
+                    first == null || last == null -> "Content-Range ${contentRange ?: "missing"}"
+                    first != pos -> "Content-Range $first, not $pos"
+                    last < first || (total != null && last >= total) -> "Content-Range $contentRange"
+                    total != null && length >= 0 && total != length -> "file size $total, was $length"
+                    contentLength >= 0 && contentLength != last - first + 1 -> "Content-Range $contentRange, $contentLength bytes"
+                    else -> null
+                }
+            }
+            else -> "HTTP $code"
         }
 
         private val CONTENT_RANGE = Regex("""^bytes (\d+)-(\d+)/(\d+|\*)$""")

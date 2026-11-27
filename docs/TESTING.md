@@ -90,6 +90,12 @@ Internet services, 4 against an SMB server). All pass.
   past the end), signed cover links, size limits.
 - Not checked: Android Auto itself, and the playback service called by another installed app
   (the rule is unit-tested only).
+- After 0.4.1 (debug, French and English): Settings lists a WebDAV place over http with a password
+  with "password sent unencrypted (no HTTPS)"; the same place without a password has no warning.
+- Second review, 25 November (debug): a link with port 65536 shared to the app plays nothing (PC
+  rule), a plain youtu.be link plays; a new file on a WebDAV place is read with its tags through
+  the stricter range checks; a web cover downloaded again is shown by the system's media controls.
+  Unit tests: ports, every part of a range answer, picture size, cache room for downloads under way.
 
 **Added in 0.4.0** (22 November; debug build, French, with the main screens also seen in English;
 the release build as stated at the end)

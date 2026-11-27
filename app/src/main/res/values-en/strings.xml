@@ -223,6 +223,7 @@
     <string name="net_user_hint">Empty = guest</string>
     <string name="net_password">Password</string>
     <string name="net_password_kept">Unchanged</string>
+    <string name="net_http_short">password sent unencrypted (no HTTPS)</string>
     <string name="net_http_warning">Without HTTPS, the password travels unencrypted over the network. Use it only on your home network.</string>
     <string name="net_test">Test</string>
     <string name="net_test_ok">Connected: %1$d folders, %2$d audio files here.</string>

@@ -98,8 +98,7 @@ internal class WebUrl(val host: String, val segments: List<String>, val query: L
             val hostPort = authority.substringAfterLast('@')
             // An IPv6 address is kept as it is: it is never a music service anyway.
             val host = if (hostPort.startsWith("[")) hostPort.lowercase() else {
-                val port = hostPort.substringAfterLast(':', "")
-                if (port.any { !it.isDigit() }) return null
+                if (!portOk(hostPort.substringAfterLast(':', ""))) return null
                 percentDecode(hostPort.substringBeforeLast(':'), plus = false).lowercase()
                     .takeIf { h -> h.isNotEmpty() && h.none { it in FORBIDDEN_IN_HOST } } ?: return null
             }
@@ -114,6 +113,13 @@ internal class WebUrl(val host: String, val segments: List<String>, val query: L
             }
             return WebUrl(host, segments, formPairs(query))
         }
+
+        /**
+         * A browser's port: ASCII digits only (not `٣` nor `１`, which Char.isDigit accepts), at most
+         * 65535, leading zeros allowed; empty means the default port.
+         */
+        fun portOk(port: String): Boolean =
+            port.all { it in '0'..'9' } && port.trimStart('0').let { it.length <= 5 && (it.toIntOrNull() ?: 0) <= 65535 }
 
         /** URLSearchParams: `&`-separated, `+` is a space, names and values percent-decoded. */
         fun formPairs(query: String): List<Pair<String, String>> = query.split('&').filter { it.isNotEmpty() }.map { p ->

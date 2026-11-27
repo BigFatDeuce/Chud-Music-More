@@ -223,6 +223,7 @@
     <string name="net_user_hint">Vide = invité</string>
     <string name="net_password">Mot de passe</string>
     <string name="net_password_kept">Inchangé</string>
+    <string name="net_http_short">mot de passe envoyé en clair (sans HTTPS)</string>
     <string name="net_http_warning">Sans HTTPS, le mot de passe circule en clair sur le réseau. À réserver à votre réseau local.</string>
     <string name="net_test">Tester</string>
     <string name="net_test_ok">Connexion réussie : %1$d dossiers, %2$d fichiers audio ici.</string>

@@ -89,6 +89,15 @@ les services Internet, 4 contre un serveur SMB). Tous passent.
   mauvais décalage, sans HEAD, après la fin), liens de pochettes signés, limites de taille.
 - Non vérifié : Android Auto lui-même, et le service de lecture appelé par une autre application
   installée (la règle n'est testée qu'en unitaire).
+- Après la 0.4.1 (debug, français et anglais) : les Paramètres montrent un emplacement WebDAV en
+  http avec mot de passe suivi de « mot de passe envoyé en clair (sans HTTPS) » ; le même sans mot
+  de passe n'a pas d'avertissement.
+- Seconde revue, 25 novembre (debug) : un lien avec le port 65536 partagé à l'application ne lance
+  rien (règle du PC), un simple lien youtu.be se lit ; un nouveau fichier d'un emplacement WebDAV
+  est lu avec ses tags malgré les contrôles de plage renforcés ; une pochette web téléchargée à
+  nouveau s'affiche dans les commandes multimédias du système. Tests unitaires : ports, chaque
+  partie d'une réponse partielle, taille des images, place dans le cache pour les téléchargements
+  en cours.
 
 **Ajouté en 0.4.0** (22 novembre ; version debug, en français, les écrans principaux vus aussi en
 anglais ; la version release comme indiqué à la fin)

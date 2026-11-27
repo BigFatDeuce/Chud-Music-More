@@ -27,6 +27,11 @@ class CoverProvider : ContentProvider() {
         private const val MAX_BYTES = 8_000_000L
         private const val CACHE_MAX = 60_000_000L
         private const val CACHE_KEEP = 40_000_000L
+        /** Biggest side of a web cover given to other apps (YouTube and online covers are 1280 or less). */
+        private const val MAX_SIDE = 4096
+        /** Downloads at once: with [MAX_BYTES] each, what the cache may grow by while they run. */
+        private const val PARALLEL = 2
+        private val downloads = java.util.concurrent.Semaphore(PARALLEL)
 
         @Volatile private var links: CoverLinks? = null
 
@@ -89,6 +94,18 @@ class CoverProvider : ContentProvider() {
         val hash = MessageDigest.getInstance("SHA-1").digest(url.toByteArray()).joinToString("") { "%02x".format(it) }
         val f = File(dir, "$hash.jpg")
         if (f.isFile) return f
+        if (!downloads.tryAcquire(30, java.util.concurrent.TimeUnit.SECONDS)) throw FileNotFoundException()
+        try {
+            if (f.isFile) return f // fetched by another caller while this one waited
+            trim(dir)
+            download(url, dir, f)
+        } finally {
+            downloads.release()
+        }
+        return f
+    }
+
+    private fun download(url: String, dir: File, f: File) {
         // A name of its own for each download: two apps asking at once never write the same file.
         val tmp = File.createTempFile("cover", ".part", dir) // (Java wants a prefix of 3 characters or more)
         try {
@@ -109,23 +126,25 @@ class CoverProvider : ContentProvider() {
             }
             val head = ByteArray(12).also { b -> tmp.inputStream().use { it.read(b) } }
             if (!CoverLinks.isPicture(head)) throw FileNotFoundException()
+            val bounds = android.graphics.BitmapFactory.Options().apply { inJustDecodeBounds = true }
+            android.graphics.BitmapFactory.decodeFile(tmp.path, bounds)
+            if (!CoverLinks.sizeOk(bounds.outWidth, bounds.outHeight, MAX_SIDE)) throw FileNotFoundException()
             if (!tmp.renameTo(f) && !f.isFile) throw FileNotFoundException()
         } catch (e: java.io.IOException) {
             throw FileNotFoundException().apply { initCause(e) }
         } finally {
             tmp.delete()
         }
-        trim(dir)
-        return f
     }
 
+    /** Room for [PARALLEL] downloads of [MAX_BYTES]: the cache never goes over [CACHE_MAX], even with all of them running. */
     private fun trim(dir: File) = runCatching {
         val now = System.currentTimeMillis()
         val files = dir.listFiles().orEmpty()
         // Left by a download that was killed half-way.
         files.filter { it.name.endsWith(".part") && now - it.lastModified() > 600_000 }.forEach { it.delete() }
         val covers = files.filter { it.name.endsWith(".jpg") }
-        val gone = CoverLinks.toTrim(covers.map { Triple(it.name, it.length(), it.lastModified()) }, CACHE_MAX, CACHE_KEEP).toSet()
+        val gone = CoverLinks.toTrimBeforeDownload(covers.map { Triple(it.name, it.length(), it.lastModified()) }, CACHE_MAX, CACHE_KEEP, PARALLEL * MAX_BYTES).toSet()
         covers.filter { it.name in gone }.forEach { it.delete() }
     }
 

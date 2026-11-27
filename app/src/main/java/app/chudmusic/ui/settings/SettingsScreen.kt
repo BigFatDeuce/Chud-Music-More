@@ -368,8 +368,9 @@ fun SettingsScreen(importer: PlaylistImporter) {
                                 s.lastError != null -> scanError(s.lastError)
                                 s.lastScanAt != null -> tracksCount(s.trackCount) + " · " + stringResource(R.string.set_last_scan, whenText(s.lastScanAt))
                                 else -> stringResource(R.string.net_never_scanned)
-                            } + (if (s.id in paused && running == null) " · " + stringResource(R.string.net_paused) else "") + "\n" + (if (s.kind == NetKind.SMB) "SMB · \\\\${s.host}\\${s.share}" else "WebDAV · ${s.host}/${s.share.trim('/')}"),
-                            icon = if (s.lastError != null) Icons.Rounded.ErrorOutline else Icons.Rounded.Lan,
+                            } + (if (s.id in paused && running == null) " · " + stringResource(R.string.net_paused) else "") + "\n" + (if (s.kind == NetKind.SMB) "SMB · \\\\${s.host}\\${s.share}" else "WebDAV · ${s.host}/${s.share.trim('/')}") +
+                                (if (app.chudmusic.net.NetworkSources.passwordInClear(s)) " · ⚠ " + stringResource(R.string.net_http_short) else ""),
+                            icon =if (s.lastError != null) Icons.Rounded.ErrorOutline else Icons.Rounded.Lan,
                             onClick = { ui.navigate(Routes.NetSource(s.id)) },
                         ) { Icon(Icons.AutoMirrored.Rounded.KeyboardArrowRight, null, tint = c.text2) }
                     }

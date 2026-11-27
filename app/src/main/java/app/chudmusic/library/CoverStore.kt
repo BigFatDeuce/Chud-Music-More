@@ -36,7 +36,8 @@ class CoverStore(context: Context) {
     fun saveBytes(key: String, bytes: ByteArray): String? {
         val opts = BitmapFactory.Options().apply { inJustDecodeBounds = true }
         BitmapFactory.decodeByteArray(bytes, 0, bytes.size, opts)
-        if (opts.outWidth <= 0) return null
+        // A tag or an online cover claiming a huge size would cost seconds of decoding, even sampled down.
+        if (!app.chudmusic.ui.covers.CoverLinks.sizeOk(opts.outWidth, opts.outHeight, MAX_SIDE)) return null
         var sample = 1
         while (opts.outWidth / (sample * 2) >= 512 && opts.outHeight / (sample * 2) >= 512) sample *= 2
         val bmp = BitmapFactory.decodeByteArray(bytes, 0, bytes.size, BitmapFactory.Options().apply { inSampleSize = sample }) ?: return null
@@ -115,5 +116,9 @@ class CoverStore(context: Context) {
         markWithout(key, true)
     }
 
-    private companion object { const val CHOSEN = "pl-" }
+    private companion object {
+        const val CHOSEN = "pl-"
+        /** Big scans in tags go up to about 6000 pixels; much more is not a cover. */
+        const val MAX_SIDE = 12_000
+    }
 }
